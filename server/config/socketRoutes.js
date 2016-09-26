@@ -1,4 +1,5 @@
 'use strict';
+var runningGames = require('./../runningGames.js');
 
 class SocketRoutes {
     constructor() {
@@ -17,6 +18,11 @@ class SocketRoutes {
             // gameToPlayers.
             socket.emit('gameCreated', 'you created the game')
         });
+
+        socket.on('gameMessage', function(data) {
+            //player is sending data to current game. the game needs to be informed and parse the data
+            runningGames.games[data.gameId].message(data);
+        })
     }
 
 

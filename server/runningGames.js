@@ -1,6 +1,5 @@
 'use strict';
 //holds games and has methods to add and remove games from server
-
 class RunningGames {
     constructor() {
         this.games = {};

@@ -8,7 +8,7 @@ class RunningGames {
     add(game_obj){
         const gameGuid = guid();
         this.games[gameGuid] = game_obj;
-        retur gameGuid;
+        return gameGuid;
 
 
     }

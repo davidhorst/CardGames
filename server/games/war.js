@@ -5,9 +5,13 @@ class War {
         this.gameId = gameId;
         player = new Player(userName);
         this.playerMap = [ {socket_id : player} ];
-        this.gameState = waiting
+        this.gameState = 'waiting'
         this.playerTurn = null;
         this.deck = new Deck();
+    }
+
+    getState() {
+        //returns current state of game
     }
 
     add(userName, socketId) {

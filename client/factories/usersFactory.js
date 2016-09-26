@@ -14,13 +14,14 @@ app.factory('usersFactory', ['$http', '$cookies', '$location', '$routeParams', f
 
         this.logout = function() {
              $cookies.remove('token');
+             $cookies.remove('current_user')
              $location.path("/");
         };
 
         this.register = function(regiserData) {
             return $http.post('/users', regiserData)
             .then(function(returned_data) {
-                return true })
+                return returned_data.data })
             .catch(function(returned_data) {
                 throw returned_data.data
             });

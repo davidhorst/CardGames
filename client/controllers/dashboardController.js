@@ -15,7 +15,7 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory',  f
 
     $scope.handleJoinGame = function() {
         console.log('click')
-        socket.emit("gameJoin", {'game_id': '12345'});
+        socket.emit("gameCreate", {'gameName': 'war'});
     };
 
     socket.on('gameJoined', function(data) {

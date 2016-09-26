@@ -1,5 +1,6 @@
 'use strict';
 var runningGames = require('./../runningGames.js');
+var War = require('./../games/war.js');
 
 class SocketRoutes {
     constructor() {
@@ -9,16 +10,27 @@ class SocketRoutes {
     add(socket) {
         socket.on("gameJoin", function(data){
             //also check if player is in any other game and remove them
+
+            //bug need if check to see if the add worked. people might click enter at same time!
             gameObj = runningGames[data.gameId];
             gameObj.add(data.userName, socket.id)
-            socket.emit('gameJoined', gameObj.getState() )
+            socket.join(data.gameId);
+            socket.emit('gameJoined', gameObj.getState())
         });
+
         socket.on('gameCreate', function(data){
             switch(data.gameName) {
                 case 'war':
+                    console.log('got into gameCreate')
                     const war = new War();
                     gameId = runningGames.add(war);
                     gameState = runningGames[gameId].getState();
+                    console.log('war')
+                    console.log(war)
+                    console.log('gameID')
+                    console.log(gameID)
+                    console.log('runningGames')
+                    console.log(runningGames)
                     break;
 
             }

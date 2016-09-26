@@ -1,13 +1,14 @@
-//handelMessage(userId, message)
-var deck = require('./deck.js');
+'use strict'
+var Deck = require('./decks.js');
+var Player = require('./player.js')
 class War {
     constructor(gameId, userName, socket_id) {
         this.gameId = gameId;
-        player = new Player(userName);
-        this.playerMap = [ {socket_id : player} ];
+        const player = new Player(userName);
+        this.PlayerMap = [ {socket_id : player} ];
         this.gameState = 'waiting'
-        this.playerTurn = null;
-        this.deck = new Deck();
+        this.PlayerTurn = null;
+        this.Deck = new Deck();
     }
 
     getState() {
@@ -15,26 +16,26 @@ class War {
     }
 
     add(userName, socketId) {
-        player = new Player(userName);
-        this.playerMap.push( {socketId : player} );
+        Player = new Player(userName);
+        this.PlayerMap.push( {socketId : Player} );
     }
 
     remove(socketId) {
-        for(var i=0; i<this.playerMap.length; i++) {
-                if(this.playerMap[i].socket_id == socketId) {
-                    //code here to clean up any data when a player leaves a game
-                    this.playerMap.splice(i, 1);
-                    break;
-                }
+        for(var i=0; i<this.PlayerMap.length; i++) {
+            if(this.PlayerMap[i].socket_id == socketId) {
+                //code here to clean up any data when a Player leaves a game
+                this.PlayerMap.splice(i, 1);
+                break;
             }
         }
     }
 
+
     deal() {
-        const numPlayers = playerMap.length;
+        const numPlayers = PlayerMap.length;
         for(const i=0; i<=52; i++) {
-            const playerIdx = i%numPlayers;
-            playeMap[1].getCard(this.deck);
+            const PlayerIdx = i%numPlayers;
+            playeMap[1].getCard(this.Deck);
         }
     }
 
@@ -44,30 +45,17 @@ class War {
         if(this.gameState == 'waiting') {
             if(data.startGame) {
                 this.deal();
-                this.playerTurn = 0;
+                this.PlayerTurn = 0;
                 this.gameState = 'playing'
             }
         }
         if(this.gameState == 'playing') {
-            if(this.playerTurn == this.playerMap[data
-                //gameTurn will be a playerObj
+            // if(this.PlayerTurn == this.PlayerMap[data
+            //     //gameTurn will be a PlayerObj
         }
 
     }
 
 }
 
-class Player {
-    constructor(name) {
-        this.name = name;
-        this.hand = [];
-    }
-    getCard(deck) {
-        this.hand.push(deck.deal());
-    }
-
-    discard() {
-        this.hand.pop();
-    }
-
-}
+module.exports = new War();

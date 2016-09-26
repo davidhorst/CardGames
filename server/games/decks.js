@@ -39,4 +39,4 @@ class Deck {
 }
 
 
-module.exports = new Deck();
+module.exports = Deck;

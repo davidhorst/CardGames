@@ -1,0 +1,34 @@
+{
+  "name": "discussion_board",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "angular-cookies": "^1.5.8",
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-jwt": "^5.0.0",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.0",
+    "mongoose-unique-validator": "^1.0.2",
+    "socket.io": "^1.4.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perkinsb01/discussion_board.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/perkinsb01/discussion_board/issues"
+  },
+  "homepage": "https://github.com/perkinsb01/discussion_board#readme"
+}

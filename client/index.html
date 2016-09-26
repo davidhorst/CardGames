@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html  ng-app='app'>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Card Game</title>
+
+<link type="text/css" rel="stylesheet" href="./../materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  </head>
+  <body>
+    <script src="./../jquery/dist/jquery.min.js"></script>
+    <script src="./../angular/angular.js"></script>
+    <script src="./../angular-route/angular-route.js"></script>
+    <script src="./../angular-cookies/angular-cookies.js"></script>
+    <script src="./../socket.io/socket.io.js"></script>
+
+    <script src="./../routes/routes.js"></script>
+
+    <script src="./../factories/usersFactory.js"></script>
+    <script src="./../factories/warGameFactory.js"></script>
+
+    <script src="./../controllers/dashboardController.js"></script>
+    <script src="./../controllers/loginController.js"></script>
+    <script src="./../controllers/userController.js"></script>
+    <script src="./../controllers/warGameController.js"></script>
+
+
+    <script type="text/javascript" src="./../materialize/dist/js/materialize.min.js"></script>
+
+
+      <div class='container'>
+          <nav class="navbar navbar-default navbar-fixed-top">
+              <div class="nav-wrapper" ng-controller='loginController'>
+                    <a class="brand-logo" href="javascript:void(0)">Card Game</a>
+                    <ul class="right">
+                        <li><a href="/#/dashboard">Dashboard</a></li>
+                        <li><a href="javascript:void(0)" ng-click='handleLogoutClick()'>Logout</a></li>
+                    </ul>
+              </div>
+          </nav>
+      <br><br>
+      <div class= 'col s10 offset-s1 wrapper' ng-view>
+
+      </div>
+    </div>
+  </body>
+</html>

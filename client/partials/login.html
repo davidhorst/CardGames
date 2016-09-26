@@ -1,0 +1,60 @@
+    <div class="row">
+        <div class='col s4'>
+            <h4>Register</h4>
+            <form class="form-horizontal">
+              <div class="input-field">
+                  <label for="inputFirstName">Name</label>
+                  <input type="text" class="form-control" id="inputFirstName" ng-model='reg_user.name'>
+              </div>
+
+              <div class="input-field">
+                  <label for="inputEmail">Email:</label>
+                  <input type="email" class="form-control" id="inputEmail" ng-model='reg_user.email'>
+                </div>
+
+                <div class="input-field">
+                    <label for="inputPassword">Password:</label>
+                    <input type="password" class="form-control" id="inputPassword" name="reg_user[password]" ng-model='reg_user.password'>
+                </div>
+
+                <div class="input-field">
+                    <label for="inputPassword2">Conform Password:</label>
+                    <input type="password" class="form-control" id="inputPassword2" name="reg_user[password]" ng-model='reg_user.conf_password'>
+                </div>
+                <div class="input-field">
+                    <div>
+                        <button class="waves-effect waves-light btn offest_button"  ng-click='handelRegisterClick()'>Sign Up</button>
+                    </div>
+                </div>
+            </form>
+            <div ng-repeat="(error, body) in reg_errors">
+                <p ng-bind='body.message'></p>
+
+            </div>
+        </div>
+
+        <div class="col s3 offset-s2">
+            <div>
+                <h4>Login</h4>
+                <form>
+                  <div class="input-field">
+                      <label for="inputEmail3">Email:</label>
+                      <input name='[email]' type="email" ng-model='user.email' class="form-control" id="inputEmail3">
+                  </div>
+                  <div class="input-field">
+                    <label for="inputPassword3">Password:</label>
+                      <input name="[password]" type="password" class="form-control" id="inputPassword3" ng-model='user.password'>
+                  </div>
+                  <div class="input-field">
+                      <button class="waves-effect waves-light btn offest_button"  ng-click='handleLoginClick()'>Sign in</button>
+                  </div>
+                </form>
+                <div ng-if='errors'>
+                    <p ng-bind='errors'></p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

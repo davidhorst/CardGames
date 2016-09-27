@@ -15,7 +15,7 @@ class Deck {
         let x = 0;
         for (i = 0; i < suits.length; i++) {
             for (j = 0; j < this.ranks.length; j++) {
-                this.deck[i*this.ranks.length + j] = {rank: this.ranks[j], suit: suits[i], imageURI: `${this.ranks[j]} + ${suits[i]}`, name: `${this.ranks[j]} of ${suits[i]} `, {cardId: x} };
+                this.deck[i*this.ranks.length + j] = {rank: this.ranks[j], suit: suits[i], imageURI: `${this.ranks[j]} + ${suits[i]}`, name: `${this.ranks[j]} of ${suits[i]} `, cardId: x };
                 x +=1;
             }
         }

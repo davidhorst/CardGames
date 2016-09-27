@@ -4,6 +4,12 @@ app.factory('warGameFactory', ['$http', '$cookies', '$location', '$routeParams',
         var self = this;
     };
 
+
+
+    // requestGames method
+
+
+
     // Start Game method
 
     // Join Game method

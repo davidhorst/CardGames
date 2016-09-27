@@ -20,5 +20,17 @@ class RunningGames {
     get(game_id) {
         return this.game[game_id];
     }
+
+    show(game_name) {
+      const gamesArr = [];
+      console.log(this.games);
+      Object.keys(this.games).forEach(function (key) {
+        let game = this.games[key];
+        if (game.name === game_name){
+          gamesArr.push(game);
+        }
+      });
+      return gamesArr
+    }
 }
 module.exports = new RunningGames();

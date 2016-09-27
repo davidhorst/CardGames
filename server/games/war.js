@@ -39,6 +39,7 @@ class War {
        const derp = {}
        derp[socket_id] = player;
        this.playerMap.push(derp);
+       
     }
 
     // Remove player from game instance

@@ -140,7 +140,7 @@ class War {
             }
             this.nextPlayerTurn();
         }
-    return getState();
+        return getState();
     }
 
 }

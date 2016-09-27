@@ -7,16 +7,7 @@ class SocketRoutes {
     }
 
     add(socket, io) {
-        // socket.on("gameJoin", function(data){
-        //     //also check if player is in any other game and remove them
-        //
-        //     //bug need if check to see if the add worked. people might click enter at same time!
-        //     gameObj = runningGames[data.gameId];
-        //     gameObj.add(data.userName, socket.id)
-        //     socket.join(data.gameId);
-        //     socket.emit('gameJoined', gameObj.getState())
-        // });
-
+        
         socket.on('gameCreate', function(data){
             switch(data.gameName) {
                 case 'war':

@@ -28,22 +28,36 @@ class War {
     }
 
     add(userName, socketId) {
-        Player = new Player(userName);
-        this.playerMap.push( {socketId : Player} );
+        player = new Player(userName);
+        this.playerMap.forEach(function(player) {
+            //if there is a player object with a blank socketId, fill that in first. ( because a player dropped )
+            if(Object.keys(player)[0] == '') {
+                Object.keys(player)[0] == socketId;
+                return
+            }
+        });
+        //if no player objects soket ids have been dropped, create a new user
+       const derp = {}
+       derp[socket_id] = player;
+       this.playerMap.push(derp);
+       }
+
     }
 
     remove(socketId) {
         for(var i=0; i<this.playerMap.length; i++) {
             if(this.playerMap[i].socket_id == socketId) {
                 //code here to clean up any data when a Player leaves a game
-                this.playerMap.splice(i, 1);
+
+                //the player object sticks around, so it can be sat at by a new player.
+                this.playerMap[i].socket_id = '';
                 break;
             }
         }
     }
 
-
     dealDeck() {
+        //give all players a near even amount of cards
         const numPlayers = playerMap.length;
         for(const i=0; i<=52; i++) {
             const PlayerIdx = i%numPlayers;
@@ -52,8 +66,9 @@ class War {
     }
 
     nextPlayerTurn() {
+        //helper to always keep player turns bound by numplayers
         numPlayers = playerMap.length;
-        playerTurn = (playerTurn + 1) % 4;
+        playerTurn = (playerTurn + 1) % numPlayers;
     }
 
     resolveCardsOnBoard() {
@@ -91,22 +106,26 @@ class War {
         // are acceptable and returns the new states of the ui to all users
         if(this.gameState == 'waiting') {
             if(data.startGame) {
+                //start game will be sent by the creator of the game room.
+                //perhaps by a button click
+
                 this.dealDeck();
 
                 //could randomize the playturn
                 this.playerTurn = 0;
                 this.gameState = 'playing'
-                //emit data updating peoples games
+
+                //emits data updating peoples games
                 return getState();
             }
             else if(data.joinGame) {
+                //only allow up to 4 users to join game
                 if(this.playerMap.length <= 4) {
                     this.add(data.userName, playerId)
                     return getState();
                 }
             }
         }
-
         if(this.gameState == 'playing') {
                     //grabing out the current players ID
             if(Object.keys(playerMap[this.playerTurn])[0] == this.playerId) {

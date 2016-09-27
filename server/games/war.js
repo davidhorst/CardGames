@@ -52,41 +52,41 @@ class War {
     }
 
     resolveCardsOnBoard() {
-        //logic to find winner of round
-            //default value is always beatable
-        let bestCard = [{rank: 0}]
-
-        //iterate over all played cards
-        this.cardsOnBoard.forEach(function(boardObj) {
-
-            //if current card is bigger than current winning rank
-            if(boardObj.card.rank > bestCard[0].rank) {
-                bestCard = [];
-                bestCard.push(boardObj);
-            }
-
-            //if current card ties current best rank
-            else if(boardObj.card.rank == bestCard[0].rank) {
-                bestCard.push(boardObj);
-            }
-        }
-
-        if(bestCard.length == 0) {
-            //one player won. they get all the cards!
-            this.cardsOnBoard.forEach(funciton(boardObj) {
-                bestCard[0].player.hand.append(boardObj.card)
-            })
-        } else {
-            this.cardsOnBoard.forEach(funciton(boardObj) {
-                boardObj.
-            }
-
-            //multiple players won. they go to war!!
-
-        }
-
-
-        });
+        // logic to find winner of round
+            // default value is always beatable
+        // let bestCard = [{rank: 0}];
+        //
+        // //iterate over all played cards
+        // this.cardsOnBoard.forEach(function(boardObj) {
+        //
+        //     //if current card is bigger than current winning rank
+        //     if(boardObj.card.rank > bestCard[0].rank) {
+        //         bestCard = [];
+        //         bestCard.push(boardObj);
+        //     }
+        //
+        //     //if current card ties current best rank
+        //     else if(boardObj.card.rank == bestCard[0].rank) {
+        //         bestCard.push(boardObj);
+        //     }
+        // }, this);
+        //
+        // if(bestCard.length == 0) {
+        //     //one player won. they get all the cards!
+        //     this.cardsOnBoard.forEach(funciton(boardObj) {
+        //         bestCard[0].player.hand.append(boardObj.card);
+        //     })
+        // } else {
+        //     this.cardsOnBoard.forEach(funciton(boardObj) {
+        //         boardObj.append();
+        //     }
+        //
+        //     //multiple players won. they go to war!!
+        //
+        // }
+        //
+        //
+        // });
     }
 
     recieveAction(playerId, data) {
@@ -107,17 +107,14 @@ class War {
             if(Object.keys(playerMap[this.playerTurn])[0] == this.playerId) {
                 if(data.playedCard) {
                     const player = playerMap[this.playerTurn][this.playerId]
-                        this.cardsOnBoard.append({player:player, card:player.shift()})
-                        }
-                    }
+                    this.cardsOnBoard.append({player:player, card:player.shift()})
                 }
             }
-            if(this.cardsOnBoard == playerMap.length) {
+            if(cardsOnBoard == playerMap.length) {
                 this.resolveCardsOnBoard();
             }
             this.nextPlayerTurn();
         }
-
     return getState();
     }
 

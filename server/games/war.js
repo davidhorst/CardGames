@@ -40,8 +40,6 @@ class War {
        const derp = {}
        derp[socket_id] = player;
        this.playerMap.push(derp);
-       
-
     }
 
     remove(socketId) {

@@ -11,7 +11,7 @@ class SocketRoutes {
 
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
-          cb(gamesArr);
+          cb({ data: gamesArr });
         });
 
         socket.on('gameCreate', function(data, cb){
@@ -29,7 +29,7 @@ class SocketRoutes {
                     // console.log(gameId)
                     // console.log('runningGames')
                     // console.log(runningGames)
-                    cb(gameState);
+                    cb(war.getState());
                     break;
 
             }

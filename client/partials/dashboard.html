@@ -50,13 +50,15 @@
         <h5 class="white-text" style="margin: 0px;">now playing:</h5>
         <h3 class="white-text" style="margin: 0px;">War</h3>
         <div class="align center game-table">
-
-          <button type="button" name="button" ng-click="handleCreateGame();"> Create Game </button>
-          <button type="button" name="button" ng-click="handleJoinGame();"> Create Game </button>
+          <div class="pre-game-buttons" ng-hide="currentGame">
+            <button class="btn" type="button" name="button" ng-click="handleCreateGame();"> Create Game </button>
+            <button type="button" name="button" ng-click="handleJoinGame();"> Join Game </button>
+          </div>
+          <button class="btn" ng-show="currentGame" ng-click="handleStartGame();">Start Game</button>
         </div>
       </div>
-      <div class="align left" ng-model="games">
-        <p class="white-text">current games: {{ games.length }}</p>
+      <div class="align left">
+        <p class="white-text">current games: {{ games }}</p>
       </div>
       <div class="align right card">
         <button class="btn blue-grey lighten-5 black-text" ng-click="leaveGame();">Leave Game</button>

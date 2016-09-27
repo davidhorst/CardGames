@@ -1,5 +1,8 @@
 'use strict';
 //holds games and has methods to add and remove games from server
+
+var War = require('./games/war.js');
+
 class RunningGames {
     constructor() {
         this.games = {};
@@ -23,12 +26,13 @@ class RunningGames {
 
     show(game_name) {
       const gamesArr = [];
-      console.log(this.games);
-      Object.keys(this.games).forEach(function (key) {
-        let game = this.games[key];
-        if (game.name === game_name){
-          gamesArr.push(game);
-        }
+      const gamesObj = this.games;
+      Object.keys(gamesObj).forEach(function (key) {
+        // console.log("key:", key)
+        let game = gamesObj[key];
+        if ( gamesObj[key] instanceof War ){
+          gamesArr.push(gamesObj[key]);
+        };
       });
       return gamesArr
     }

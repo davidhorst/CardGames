@@ -7,8 +7,10 @@ body{
 div {
   background-color: white;
 }
-.row {
-  margin-bottom: 5px;
+div.stuff {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
 }
 span.highlighter {
   background-color: yellow;

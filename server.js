@@ -5,7 +5,6 @@ const express    = require( 'express' ),
     jwt          = require('jsonwebtoken'),
     path         = require('path'),
     cookieparser = require("cookie-parser"),
-    socketRoutes = require('./server/config/socketRoutes'),
     root         = __dirname,
     port         = process.env.PORT || 8000,
     app          = express();
@@ -25,8 +24,10 @@ require('./server/config/routes.js')(app);
 const server = app.listen( port, function() {
   console.log( `server running on port ${ port }` );
 });
-const io = require('socket.io').listen(server)
 
-io.sockets.on('connection', function (socket) {
-    socketRoutes.add(socket);
+const io = require('socket.io').listen(server)
+const socketRoutes =require('./server/config/socketRoutes');
+
+io.sockets.on('connection', function(socket) {
+    socketRoutes.add(socket, io);
 });

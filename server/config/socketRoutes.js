@@ -7,29 +7,16 @@ class SocketRoutes {
     }
 
     add(socket, io) {
-        
+
         socket.on('gameCreate', function(data){
             switch(data.gameName) {
                 case 'war':
-                    // console.log('got into gameCreate')
                     const war = new War(guid(), data.userName, socket.id)
                     const gameId = runningGames.add(war);
-                    // console.log('runningGames.games')
-                    // console.log(runningGames.games)
                     const gameState = runningGames.games[gameId].getState();
-                    // console.log(gameState);
-                    // console.log('gameState');
-                    // console.log('war player soket')
-                    // console.log(socket.id)
-                    // console.log(war.PlayerMap[0])
-                    // console.log('gameID')
-                    // console.log(gameId)
-                    // console.log('runningGames')
-                    // console.log(runningGames)
                     break;
 
             }
-            //add player to 'room' socket?
             socket.join(gameId);
             socket.emit('gameCreated', gameState );
             io.to(gameId).emit('returnMessage', 'this is a test');
@@ -51,5 +38,12 @@ class SocketRoutes {
             s4() + '-' + s4() + s4() + s4();
         }
     }
+
+
+    remove(socket, io) {
+        //remove player from game they are in.
+        //if game is empty destroy game.
+    }
+
 }
 module.exports = new SocketRoutes();

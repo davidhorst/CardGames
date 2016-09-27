@@ -1,8 +1,34 @@
-<div class="background-img" style="height: 150px; background: #607d8b;">
 
-</div>
 <div class="user-detail-body container">
   <div class="align center">
-    <h4> Username: {{user.name}}</h4>
+    <div class="user-details row">
+    <h5>
+      <img src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
+      You are known as "<b>{{user.name}}</b>".<span class="highlighter"> <-- Has NOT upgraded to premium!</span>
+    </h5>
+    <div class="game-stats">
+      <div class="col s3">
+        <h5>Played</h5>
+        <p>{{user.history.total}}</p>
+      </div>
+      <div class="col s3">
+        <h5>Wins</h5>
+        <p>{{user.history.wins}}</p>
+      </div>
+      <div class="col s3">
+        <h5>Loses</h5>
+        <p>{{user.history.losses}}</p>
+      </div>
+      <div class="col s3">
+        <h5>Email</h5>
+        <p>{{user.email}}</p>
+      </div>
+      <h5>Testing Only</h5>
+      <p>Hashed Password: {{user.password}}</p>
+      <p>Currently playing "{{user.current_game}}". Enjoy! </p>
+    </div>
+
+    
   </div>
-</div>
+</div> <!-- End User Display Box -->
+

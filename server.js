@@ -31,3 +31,6 @@ const socketRoutes =require('./server/config/socketRoutes');
 io.sockets.on('connection', function(socket) {
     socketRoutes.add(socket, io);
 });
+io.sockets.on('disconnect', function(socket) {
+    socketRoutes.remove(socket, io);
+})

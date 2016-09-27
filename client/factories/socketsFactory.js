@@ -29,5 +29,6 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
 
    };
 
-    return new socketsFactory();
+   return new socketsFactory();
+
 }]);

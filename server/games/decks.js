@@ -2,7 +2,7 @@
 
 class Deck {
     constructor(){
-        this.ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10","J", "Q", "K"];
+        this.ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10","11", "12", "13","14"];
         this.makeDeck();
     }
 
@@ -12,9 +12,11 @@ class Deck {
         this.deck = [];
 
         var i, j;
+        let x = 0;
         for (i = 0; i < suits.length; i++) {
             for (j = 0; j < this.ranks.length; j++) {
-                this.deck[i*this.ranks.length + j] = {rank: this.ranks[j], suit: suits[i], imageURI: `${this.ranks[j]} + ${suits[i]}`, name: `${this.ranks[j]} of ${suits[i]} `};
+                this.deck[i*this.ranks.length + j] = {rank: this.ranks[j], suit: suits[i], imageURI: `${this.ranks[j]} + ${suits[i]}`, name: `${this.ranks[j]} of ${suits[i]} `, {cardId: x} };
+                x +=1;
             }
         }
     }

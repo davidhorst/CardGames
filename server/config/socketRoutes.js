@@ -4,10 +4,9 @@ var War = require('./../games/war.js');
 
 class SocketRoutes {
     constructor() {
-
     }
 
-    add(socket) {
+    add(socket, io) {
         socket.on("gameJoin", function(data){
             //also check if player is in any other game and remove them
 
@@ -43,12 +42,14 @@ class SocketRoutes {
             console.log('after switch')
             socket.join(gameId);
             socket.emit('gameCreated', gameState );
-            // io.to(gameId).emit('returnMessage', 'this is a test');
+            console.log('io')
+            console.log(io)
+            io.to(gameId).emit('returnMessage', 'this is a test');
         });
 
         socket.on('gameMessage', function(data) {
             //player is sending data to current game. the game needs to be informed and parse the data
-            runningGames.games[data.gameId].recieveAction(data);
+            runningGames.games[data.gameId].recieveAction(socket.id, data);
         })
 
         function guid(){

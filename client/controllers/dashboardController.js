@@ -15,12 +15,18 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory',  f
 
     $scope.handleJoinGame = function() {
         console.log('click')
-        socket.emit("gameCreate", {'gameName': 'war'});
+        socket.emit("gameCreate", {'gameName': 'war', 'userName':  $scope.user.user_name});
     };
 
-    socket.on('gameJoined', function(data) {
+    socket.on('gameCreated', function(data) {
         console.log(data);
         $scope.gameState = data;
+        $scope.$digest();
+    });
+
+    socket.on('returnMessage', function(data) {
+        console.log(data);
+        $scope.gameReply = data;
         $scope.$digest();
     });
         //do any pre game checks

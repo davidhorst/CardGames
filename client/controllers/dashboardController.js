@@ -9,7 +9,6 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory', 's
     $scope.game = { name: null };
 
     $scope.handleLaunchGame = function(game_name) {
-      console.log(game_name);
       $scope.game.name = game_name;
     };
 

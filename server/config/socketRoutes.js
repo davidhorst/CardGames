@@ -4,9 +4,16 @@ var War = require('./../games/war.js');
 
 class SocketRoutes {
     constructor() {
+
     }
 
-    add(socket, io) {
+    add(socket) {
+
+        socket.on("showGames", function(data, cb){
+          const gamesArr = runningGames.show(data);
+          cb(gamesArr);
+        });
+
         socket.on("gameJoin", function(data){
             //also check if player is in any other game and remove them
 
@@ -17,7 +24,7 @@ class SocketRoutes {
             socket.emit('gameJoined', gameObj.getState())
         });
 
-        socket.on('gameCreate', function(data){
+        socket.on('gameCreate', function(data, cb){
             switch(data.gameName) {
                 case 'war':
                     // console.log('got into gameCreate')
@@ -35,6 +42,7 @@ class SocketRoutes {
                     // console.log(gameId)
                     // console.log('runningGames')
                     // console.log(runningGames)
+                    cb(gameState);
                     break;
 
             }
@@ -42,14 +50,12 @@ class SocketRoutes {
             console.log('after switch')
             socket.join(gameId);
             socket.emit('gameCreated', gameState );
-            console.log('io')
-            console.log(io)
-            io.to(gameId).emit('returnMessage', 'this is a test');
+            // io.to(gameId).emit('returnMessage', 'this is a test');
         });
 
         socket.on('gameMessage', function(data) {
             //player is sending data to current game. the game needs to be informed and parse the data
-            runningGames.games[data.gameId].recieveAction(socket.id, data);
+            runningGames.games[data.gameId].recieveAction(data);
         })
 
         function guid(){

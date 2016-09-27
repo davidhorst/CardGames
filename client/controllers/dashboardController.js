@@ -1,6 +1,4 @@
-app.controller('dashboardController', ['$scope', '$location', 'usersFactory',  function($scope, $location, usersFactory) {
-
-    var socket = io.connect();
+app.controller('dashboardController', ['$scope', '$location', 'usersFactory', 'socketsFactory', function($scope, $location, usersFactory, socketsFactory) {
 
     if(! usersFactory.isLoggedIn()) {
         $location.path("/");
@@ -8,28 +6,20 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory',  f
 
     $scope.user = usersFactory.getCurrentUser();
 
-    $scope.gameState;
+    $scope.game = { name: null };
 
-    $scope.handleJoinGame = function() {
-        socket.emit("gameCreate", {'gameName': 'war', 'userName':  $scope.user.user_name});
+    $scope.handleLaunchGame = function(game_name) {
+      console.log(game_name);
+      $scope.game.name = game_name;
     };
 
     $scope.leaveGame = function(){
-      $scope.gameState = null;
+      $scope.game.name = null;
     };
+
     //// Socket Responses  ////
 
-    socket.on('gameCreated', function(data) {
-        console.log(data);
-        $scope.gameState = data;
-        $scope.$digest();
-    });
 
-    socket.on('returnMessage', function(data) {
-        console.log(data);
-        $scope.gameReply = data;
-        $scope.$digest();
-    });
         //do any pre game checks
         //add any data to user about joining game
 

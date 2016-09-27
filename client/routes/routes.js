@@ -23,10 +23,10 @@ app.config(function ($routeProvider) {
             controller: 'userController',
         })
 
-        .when('/cardgame/war', {
-            templateUrl: 'partials/warGame.html',
-            controller: 'warGameController'
-        })
+        // .when('/cardgame/war', {
+        //     templateUrl: 'partials/warGame.html',
+        //     controller: 'warGameController'
+        // })
 
         .otherwise({
           redirectTo: '/'

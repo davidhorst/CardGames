@@ -27,17 +27,17 @@
         </div>
       </div>
     </div> <!-- End User Display Box -->
-    <div ng-hide="gameState">
+    <div ng-hide="game.name">
       <div class="row game-button">
         <div class="col s12">
-          <div class="card-panel green darken-3" ng-click="handleJoinGame();">
+          <div class="card-panel green darken-3" ng-click="handleLaunchGame('war');">
             <span class="white-text align center">War</span>
           </div>
         </div>
       </div>
       <div class="row game-button">
         <div class="col s12">
-          <div class="card-panel green darken-3" ng-click="handleJoinGame();">
+          <div class="card-panel green darken-3" ng-click="handleJoinGame('euchre');">
             <span class="white-text align center">Euchre</span>
           </div>
         </div>
@@ -45,10 +45,15 @@
     </div>
   </div><!-- End Left Column -->
   <div class="col s10"><!-- Start Right Column -->
-    <div class="row col s12 card green darken-3" ng-show="gameState" ng-controller="warGameController">
+    <div class="row col s12 card green darken-3" ng-show="game.name === 'war'" ng-controller="warGameController">
       <div class="align center">
         <h5 class="white-text" style="margin: 0px;">now playing:</h5>
         <h3 class="white-text" style="margin: 0px;">War</h3>
+        <div class="align center game-table">
+
+          <button type="button" name="button" ng-click="handleCreateGame(game.name);"> Create Game </button>
+          <button type="button" name="button" ng-click="handleJoinGame();"> Create Game </button>
+        </div>
       </div>
       <div class="align right card">
         <button class="btn blue-grey lighten-5 black-text" ng-click="leaveGame();">Leave Game</button>

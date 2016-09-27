@@ -8,26 +8,42 @@ class SocketRoutes {
     }
 
     add(socket, io) {
-
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
           cb({ data: gamesArr });
         });
 
         socket.on('gameCreate', function(data, cb){
+            let war;
+            let gameId;
+            let gameState;
+
             switch(data.gameName) {
+                // , data.userName, socket.id
                 case 'war':
-                    const war = new War(guid(), data.userName, socket.id)
-                    const gameId = runningGames.add(war);
-                    const gameState = runningGames.games[gameId].getState();
+                    war = new War(guid())
+                    gameId = runningGames.add(war);
+                    gameState = runningGames.games[gameId].getState();
+                    // Add User to game
+                    war.add(data.userName, socket.id);
+                    // return data to the socketsFactory
                     cb(war.getState());
                     break;
 
             }
+            // join socket to game room
             socket.join(gameId);
+            // returns game state
             socket.emit('gameCreated', gameState );
-
+            // emit message to entire room
             io.to(gameId).emit('returnMessage', 'this is a test');
+        });
+
+        socket.on('joinGame', function(data, cb) {
+           console.log("data: ",data);
+           let game = runningGames.get(data.gameId);
+           socket.join(data.gameId);
+           game.add(data.userName, socket.id)
         });
 
         socket.on('gameMessage', function(data) {

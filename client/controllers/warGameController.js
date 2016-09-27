@@ -5,7 +5,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   var getGames = function(){
     socketsFactory.showGames('war', function(returned_data){
-        $scope.games = returned_data.data.length;
+        $scope.games = returned_data.data;
         console.log('games:', $scope.games);
     });
   };
@@ -24,7 +24,16 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   // Join Game
   $scope.handleJoinGame = function(){
-
+    $scope.games.forEach(function(game){
+      if (game.capacity[0] != game.capacity[1]) {
+        joinObj = { userName: $scope.user.user_name, gameId: game.gameId }
+        socketsFactory.joinGame(joinObj, function(returned_data){
+          $scope.currentGame = returned_data;
+          getGames();
+          $scope.$digest();
+        });
+      };
+    });
   };
 
 

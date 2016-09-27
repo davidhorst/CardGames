@@ -54,11 +54,12 @@
             <button class="btn" type="button" name="button" ng-click="handleCreateGame();"> Create Game </button>
             <button type="button" name="button" ng-click="handleJoinGame();"> Join Game </button>
           </div>
-          <button class="btn" ng-show="currentGame" ng-click="handleStartGame();">Start Game</button>
+          <p class="white-text"> Waiting for more players</p>
+          <button class="btn" ng-show="currentGame.state === 'waiting'" ng-click="handleStartGame();">Start Game</button>
         </div>
       </div>
       <div class="align left">
-        <p class="white-text">current games: {{ games }}</p>
+        <p class="white-text">current games: {{ games.length }}</p>
       </div>
       <div class="align right card">
         <button class="btn blue-grey lighten-5 black-text" ng-click="leaveGame();">Leave Game</button>

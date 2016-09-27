@@ -3,17 +3,15 @@ var Deck = require('./decks.js');
 var Player = require('./player.js')
 class War {
     constructor(gameId, userName, socket_id) {
+        this.name = "war";
         this.gameId = gameId;
         const player = new Player(userName);
         this.playerMap = []
-        //this.playerMap = {socketId : playerObj}
-        //must only have one key:value pair per obj.
         const derp = {}
         derp[socket_id] = player;
         this.playerMap.push(derp);
         this.gameState = 'waiting';
-        this.playerTurn = null;
-        this.cardsOnBoard = [];
+        this.PlayerTurn = null;
         this.Deck = new Deck();
     }
 
@@ -27,6 +25,7 @@ class War {
         return currentState;
     }
 
+    // Add Player to game instance
     add(userName, socketId) {
         player = new Player(userName);
         this.playerMap.forEach(function(player) {
@@ -42,20 +41,19 @@ class War {
        this.playerMap.push(derp);
     }
 
+    // Remove player from game instance
     remove(socketId) {
         for(var i=0; i<this.playerMap.length; i++) {
             if(this.playerMap[i].socket_id == socketId) {
                 //code here to clean up any data when a Player leaves a game
-
-                //the player object sticks around, so it can be sat at by a new player.
-                this.playerMap[i].socket_id = '';
+                this.playerMap.splice(i, 1);
                 break;
             }
         }
     }
 
-    dealDeck() {
-        //give all players a near even amount of cards
+
+    deal() {
         const numPlayers = playerMap.length;
         for(const i=0; i<=52; i++) {
             const PlayerIdx = i%numPlayers;
@@ -104,15 +102,9 @@ class War {
         // are acceptable and returns the new states of the ui to all users
         if(this.gameState == 'waiting') {
             if(data.startGame) {
-                //start game will be sent by the creator of the game room.
-                //perhaps by a button click
-
-                this.dealDeck();
-
-                //could randomize the playturn
-                this.playerTurn = 0;
+                this.deal();
+                this.PlayerTurn = 0;
                 this.gameState = 'playing'
-
                 //emits data updating peoples games
                 return getState();
             }
@@ -128,21 +120,12 @@ class War {
             }
         }
         if(this.gameState == 'playing') {
-                    //grabing out the current players ID
-            if(Object.keys(playerMap[this.playerTurn])[0] == this.playerId) {
-                if(data.playedCard) {
-                    const player = playerMap[this.playerTurn][this.playerId]
-                    this.cardsOnBoard.append({player:player, card:player.shift()})
-                }
-            }
-            if(cardsOnBoard == playerMap.length) {
-                this.resolveCardsOnBoard();
-            }
-            this.nextPlayerTurn();
+            // if(this.PlayerTurn == this.playerMap[data
+            //     //gameTurn will be a PlayerObj
         }
         return getState();
-    }
+    } // End recieveAction
 
-}
+} // End War Class
 
 module.exports = War;

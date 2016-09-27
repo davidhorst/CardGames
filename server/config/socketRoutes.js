@@ -11,7 +11,7 @@ class SocketRoutes {
 
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
-          cb(gamesArr);
+          cb({ data: gamesArr });
         });
 
         socket.on('gameCreate', function(data, cb){
@@ -20,7 +20,7 @@ class SocketRoutes {
                     const war = new War(guid(), data.userName, socket.id)
                     const gameId = runningGames.add(war);
                     const gameState = runningGames.games[gameId].getState();
-                    cb(gameState);
+                    cb(war.getState());
                     break;
 
             }
@@ -51,6 +51,9 @@ class SocketRoutes {
         io.to(socket.gameId).emit('returnMessage', 'this is a test');
         //remove player from game they are in.
         //if game is empty destroy game.
+        if(runningGames[socket.gameId].playerMap.length === 0) {
+            delete runningGames[socket.gameId];
+        }
     }
 
 }

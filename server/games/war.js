@@ -17,13 +17,28 @@ class War {
 
     getState() {
         //will return all of the game state. for now, just returns this.gamestate
-        return this.gameState
+        let currentState = {};
+        currentState.state = this.gameState;
+        currentState.playerMap = this.playerMap;
+        currentState.cardsOnBoard = this.cardsOnBoard;
+
+        return currentState;
     }
 
     // Add Player to game instance
     add(userName, socketId) {
-        Player = new Player(userName);
-        this.playerMap.push( {socketId : Player} );
+        player = new Player(userName);
+        this.playerMap.forEach(function(player) {
+            //if there is a player object with a blank socketId, fill that in first. ( because a player dropped )
+            if(Object.keys(player)[0] == '') {
+                Object.keys(player)[0] == socketId;
+                return player;
+            }
+        });
+        //if no player objects soket ids have been dropped, create a new user
+       const derp = {}
+       derp[socket_id] = player;
+       this.playerMap.push(derp);
     }
 
     // Remove player from game instance
@@ -46,7 +61,43 @@ class War {
         }
     }
 
-    recieveAction(data) {
+    nextPlayerTurn() {
+        //helper to always keep player turns bound by numplayers
+        numPlayers = playerMap.length;
+        playerTurn = (playerTurn + 1) % numPlayers;
+    }
+
+    resolveCardsOnBoard() {
+        // logic to find winner of round
+            // default value is always beatable
+        let bestCard = [{rank: 0}];
+
+        //iterate over all played cards
+        this.cardsOnBoard.forEach(function(boardObj) {
+
+            //if current card is bigger than current winning rank
+            if(boardObj.card.rank > bestCard[0].rank) {
+                bestCard = [];
+                bestCard.push(boardObj);
+            }
+
+            //if current card ties current best rank
+            else if(boardObj.card.rank == bestCard[0].rank) {
+                bestCard.push(boardObj);
+            }
+        });
+
+        if(bestCard.length == 0) {
+            //one player won. they get all the cards!
+            for(let i = 0; i < this.cardsOnBoard.length; i++) {
+                bestCard[0].player.hand.append(this.cardsOnBoard[i].card);
+            }
+        } else {
+            //multiple players won. they go to war!!
+        }
+    }
+
+    recieveAction(playerId, data, io) {
         //this is the state machine which will validate if the user and action
         // are acceptable and returns the new states of the ui to all users
         if(this.gameState == 'waiting') {
@@ -54,6 +105,18 @@ class War {
                 this.deal();
                 this.PlayerTurn = 0;
                 this.gameState = 'playing'
+                //emits data updating peoples games
+                return getState();
+            }
+            else if(data.joinGame) {
+                //only allow up to 4 users to join game
+                if(this.playerMap.length <= 4) {
+
+                    //if the user is taking someones seat, they need that persons player information
+                    var player = this.add(data.userName, playerId)
+                    playerId.emit('gameJoined', player )
+                    return getState();
+                }
             }
         }
         if(this.gameState == 'playing') {
@@ -61,8 +124,8 @@ class War {
             //     //gameTurn will be a PlayerObj
         }
 
-    }
+    } // End recieveAction
 
-}
+} // End War Class
 
 module.exports = War;

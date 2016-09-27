@@ -2,22 +2,20 @@
 var Deck = require('./decks.js');
 var Player = require('./player.js')
 class War {
-    constructor(gameId, userName, socket_id) {
+    constructor(gameId) {
         this.name = "war";
+        this.totalPlayers = 4
         this.gameId = gameId;
-        const player = new Player(userName);
         this.playerMap = []
-        const derp = {}
-        derp[socket_id] = player;
-        this.playerMap.push(derp);
         this.gameState = 'waiting';
         this.PlayerTurn = null;
         this.Deck = new Deck();
     }
 
     getState() {
-        //will return all of the game state. for now, just returns this.gamestate
         let currentState = {};
+        currentState.gameId = this.gameId;
+        currentState.capacity = [this.playerMap.length, this.totalPlayers]
         currentState.state = this.gameState;
         currentState.playerMap = this.playerMap;
         currentState.cardsOnBoard = this.cardsOnBoard;
@@ -27,18 +25,20 @@ class War {
 
     // Add Player to game instance
     add(userName, socketId) {
-        player = new Player(userName);
-        this.playerMap.forEach(function(player) {
+        console.log(userName, socketId);
+        const player = new Player(userName);
+        console.log(player);
+        this.playerMap.forEach(function(playerId) {
             //if there is a player object with a blank socketId, fill that in first. ( because a player dropped )
-            if(Object.keys(player)[0] == '') {
-                Object.keys(player)[0] == socketId;
+            if(Object.keys(playerId)[0] == '') {
+                Object.keys(playerId)[0] == socketId;
                 return player;
             }
         });
         //if no player objects soket ids have been dropped, create a new user
-       const derp = {}
-       derp[socket_id] = player;
-       this.playerMap.push(derp);
+       const id_player_obj = {}
+       id_player_obj[socketId] = player;
+       this.playerMap.push(id_player_obj);
     }
 
     // Remove player from game instance

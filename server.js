@@ -29,7 +29,7 @@ const server = app.listen( port, function() {
 const io = require('socket.io').listen(server)
 
 io.sockets.on('connection', function (socket) {
-    socketRoutes.add(socket);
+    socketRoutes.add(socket, io);
 });
 io.sockets.on('disconnect', function(socket) {
     socketRoutes.remove(socket, io);

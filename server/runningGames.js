@@ -17,11 +17,11 @@ class RunningGames {
 
     remove(game_id) {
         //code here to remove any data from users that are in the game_id
-        delete this.game[game_id];
+        delete this.games[game_id];
     }
 
     get(game_id) {
-        return this.game[game_id];
+        return this.games[game_id];
     }
 
     show(game_name) {
@@ -31,7 +31,7 @@ class RunningGames {
         // console.log("key:", key)
         let game = gamesObj[key];
         if ( gamesObj[key] instanceof War ){
-          gamesArr.push(gamesObj[key]);
+          gamesArr.push(gamesObj[key].getState());
         };
       });
       return gamesArr

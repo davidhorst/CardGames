@@ -11,11 +11,14 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory',  f
 
 
 
-    $scope.gameState = 'test';
+    $scope.gameState;
 
     $scope.handleJoinGame = function() {
-        console.log('click')
         socket.emit("gameJoin", {'game_id': '12345'});
+    };
+
+    $scope.leaveGame = function(){
+        $scope.gameState = null;
     };
 
     socket.on('gameJoined', function(data) {

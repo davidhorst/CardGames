@@ -40,6 +40,14 @@ var UsersSchema = new mongoose.Schema({
         //     message: "Password failed validation, you must have at least 1 number, uppercase and special character"
         // }
     },
+    history: {
+      total: {type: Number, default: 0},
+      wins: {type: Number, default: 0},
+      losses: {type: Number, default: 0},
+    },
+    current_game: {
+      type: String
+    },
 },
 {timestamps: true });
 

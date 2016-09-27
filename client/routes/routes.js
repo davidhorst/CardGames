@@ -13,6 +13,11 @@ app.config(function ($routeProvider) {
             controller: 'dashboardController',
         })
 
+        .when('/leaderboard', {
+            templateUrl: 'partials/leaderboard.html',
+            controller: 'leaderboardController',
+        })
+
         .when('/users/:id', {
             templateUrl: 'partials/user.html',
             controller: 'userController',

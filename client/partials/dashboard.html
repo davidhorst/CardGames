@@ -1,5 +1,60 @@
-<h4>Welcome, <a href='/#/users/{{user.user_id}}'>{{user.user_name}}</a>!</h4>
-
-<h2><a ng-click='handleJoinGame()' href=''>Start War</a></h2>
-
-<p>{{gameState}}</p>
+<div class="row">
+  <p></p>
+</div>
+<div class="row container">
+  <div class="col s2"> <!-- Start Left Column -->
+    <div class="user-display">
+      <div class="display-background row">
+        <img style="height: 70px; width: 100%;" src="assets/images/blue-gray-box.png" alt="raspberry jam" />
+      </div>
+      <div class="user-details row">
+        <img class="left col s4 responsive-img"src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
+        <h5><a class="black-text" href="/#/users/{{user.user_id}}">{{user.user_name}}</a></h5>
+        <div class="game-stats">
+          <div class="col s4">
+            <p>Played</p>
+            <p>47</p>
+          </div>
+          <div class="col s4">
+            <p>Wins</p>
+            <p>32</p>
+          </div>
+          <div class="col s4">
+            <p>Loses</p>
+            <p>15</p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- End User Display Box -->
+    <div ng-hide="gameState">
+      <div class="row game-button">
+        <div class="col s12">
+          <div class="card-panel green darken-3" ng-click="handleJoinGame();">
+            <span class="white-text align center">War</span>
+          </div>
+        </div>
+      </div>
+      <div class="row game-button">
+        <div class="col s12">
+          <div class="card-panel green darken-3" ng-click="handleJoinGame();">
+            <span class="white-text align center">Euchre</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- End Left Column -->
+  <div class="col s10"><!-- Start Right Column -->
+    <div class="row col s12 card green darken-3" ng-show="gameState" ng-controller="warGameController">
+      <div class="align center">
+        <h5 class="white-text" style="margin: 0px;">now playing:</h5>
+        <h3 class="white-text" style="margin: 0px;">War</h3>
+      </div>
+      <div class="align right card">
+        <button class="btn blue-grey lighten-5 black-text" ng-click="leaveGame();">Leave Game</button>
+      </div>
+    </div>
+    <div class="row col s12 card">
+      <input style="margin: 0px;" type="text" name="name" value="">
+    </div>
+  </div>
+</div>

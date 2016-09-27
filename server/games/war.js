@@ -123,7 +123,7 @@ class War {
             // if(this.PlayerTurn == this.playerMap[data
             //     //gameTurn will be a PlayerObj
         }
-
+        return getState();
     } // End recieveAction
 
 } // End War Class

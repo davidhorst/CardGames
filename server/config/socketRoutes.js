@@ -67,6 +67,9 @@ class SocketRoutes {
         io.to(socket.gameId).emit('returnMessage', 'this is a test');
         //remove player from game they are in.
         //if game is empty destroy game.
+        if(runningGames[socket.gameId].playerMap.length === 0) {
+            delete runningGames[socket.gameId];
+        }
     }
 
 }

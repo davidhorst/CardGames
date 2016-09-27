@@ -20,7 +20,7 @@ class War {
     getState() {
         //will return all of the game state. for now, just returns this.gamestate
         let currentState = {};
-        currentState.gameState = this.gameState;
+        currentState.state = this.gameState;
         currentState.playerMap = this.playerMap;
         currentState.cardsOnBoard = this.cardsOnBoard;
 
@@ -33,7 +33,7 @@ class War {
             //if there is a player object with a blank socketId, fill that in first. ( because a player dropped )
             if(Object.keys(player)[0] == '') {
                 Object.keys(player)[0] == socketId;
-                return
+                return player;
             }
         });
         //if no player objects soket ids have been dropped, create a new user
@@ -99,7 +99,7 @@ class War {
         }
     }
 
-    recieveAction(data, playerId) {
+    recieveAction(playerId, data, io) {
         //this is the state machine which will validate if the user and action
         // are acceptable and returns the new states of the ui to all users
         if(this.gameState == 'waiting') {
@@ -119,7 +119,10 @@ class War {
             else if(data.joinGame) {
                 //only allow up to 4 users to join game
                 if(this.playerMap.length <= 4) {
-                    this.add(data.userName, playerId)
+
+                    //if the user is taking someones seat, they need that persons player information
+                    var player = this.add(data.userName, playerId)
+                    playerId.emit('gameJoined', player )
                     return getState();
                 }
             }

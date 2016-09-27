@@ -20,15 +20,6 @@ class SocketRoutes {
                     const war = new War(guid(), data.userName, socket.id)
                     const gameId = runningGames.add(war);
                     const gameState = runningGames.games[gameId].getState();
-                    // console.log(gameState);
-                    // console.log('gameState');
-                    // console.log('war player soket')
-                    // console.log(socket.id)
-                    // console.log(war.PlayerMap[0])
-                    // console.log('gameID')
-                    // console.log(gameId)
-                    // console.log('runningGames')
-                    // console.log(runningGames)
                     cb(gameState);
                     break;
 
@@ -41,8 +32,7 @@ class SocketRoutes {
 
         socket.on('gameMessage', function(data) {
           //player is sending data to current game. the game needs to be informed and parse the data
-          runningGames.games[data.gameId].recieveAction(data);
-          const newState = runningGames.games[data.gameId].recieveAction(socket.id, data);
+          const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
           io.to(data.gameId).emit(newState);
         });
 
@@ -57,9 +47,7 @@ class SocketRoutes {
         }
     }
 
-
     remove(socket, io) {
-
         io.to(socket.gameId).emit('returnMessage', 'this is a test');
         //remove player from game they are in.
         //if game is empty destroy game.

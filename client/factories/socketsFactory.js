@@ -23,6 +23,7 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
         // Show Games method (index)
         this.showGames = function(game_name, cb){
           socket.emit("showGames", game_name, function(data){
+            console.log('socketsFactory callback');
             cb(data);
           });
         };

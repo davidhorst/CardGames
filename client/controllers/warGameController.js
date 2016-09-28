@@ -2,19 +2,23 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   $scope.user = usersFactory.getCurrentUser();
   $scope.gameState = null;
-
+  var tempGames;
   var getGames = function(){
-    socketsFactory.showGames('war', function(returned_data){
-        $scope.games = returned_data.data;
-        console.log('games:', $scope.games);
+      socketsFactory.showGames('war', function(returned_data){
+          console.log('controller callback');
 
-    });
+          tempGames = returned_data;
+          console.log(tempGames);
+          $scope.$apply(function(){
+            $scope.games = tempGames.data;
+          });
+      });
   };
 
   getGames();
 
   socketsFactory.socket.on('test', function(data) {
-      console.log(data)
+      // console.log(data);
   });
 
   // Create Game
@@ -23,7 +27,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       socketsFactory.createGame(gameObj, function(returned_data){
         $scope.currentGame = returned_data;
         getGames();
-        $scope.$digest();
       });
   };
 
@@ -35,12 +38,11 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
         socketsFactory.joinGame(joinObj, function(returned_obj){
           $scope.currentGame = returned_obj.gameState;
           getGames();
-
-          $scope.$digest();
         });
       };
     });
   };
+
 
 
 }]);

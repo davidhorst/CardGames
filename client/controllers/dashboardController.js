@@ -8,19 +8,26 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory', 's
 
     $scope.game = { name: null };
 
+    // Launch A Card Game
     $scope.handleLaunchGame = function(game_name) {
       $scope.game.name = game_name;
     };
 
+    // Leave a Card Game
     $scope.leaveGame = function(){
       $scope.game.name = null;
     };
 
-    //// Socket Responses  ////
+    // Send a message
+    $scope.message;
+    $scope.sendMessage = function() {
+        socketsFactory.sendMessage($scope.message)
+        $scope.message;
+    };
+
+    // Recieve messages
 
 
-        //do any pre game checks
-        //add any data to user about joining game
 
 
 }]);

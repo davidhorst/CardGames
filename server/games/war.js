@@ -7,7 +7,7 @@ class War {
         this.totalPlayers = 4
         this.gameId = gameId;
         this.playerMap = []
-        this.gameState = 'waiting';
+        this.state = 'waiting';
         this.PlayerTurn = null;
         this.Deck = new Deck();
     }
@@ -16,7 +16,7 @@ class War {
         let currentState = {};
         currentState.gameId = this.gameId;
         currentState.capacity = [this.playerMap.length, this.totalPlayers]
-        currentState.state = this.gameState;
+        currentState.state = this.state;
         currentState.playerMap = this.playerMap;
         currentState.cardsOnBoard = this.cardsOnBoard;
 
@@ -117,7 +117,7 @@ class War {
             }
         });
         if(playersWithCards.length === 1){
-            this.gameState = 'Over';
+            this.state = 'Over';
             //put in code to emit to player they won
         }
     }
@@ -125,11 +125,11 @@ class War {
     recieveAction(playerId, data, io) {
         //this is the state machine which will validate if the user and action
         // are acceptable and returns the new states of the ui to all users
-        if(this.gameState == 'waiting') {
+        if(this.state == 'waiting') {
             if(data.startGame) {
                 this.deal();
                 this.PlayerTurn = 0;
-                this.gameState = 'playing'
+                this.state = 'playing'
                 //emits data updating peoples games
                 return getState();
             }
@@ -144,7 +144,7 @@ class War {
                 }
             }
         }
-        if(this.gameState == 'playing') {
+        if(this.state == 'playing') {
                   //grabing out the current players ID
             if(Object.keys(playerMap[this.playerTurn])[0] == this.playerId) {
                 if(data.playedCard) {

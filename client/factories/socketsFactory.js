@@ -6,9 +6,8 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
         var self = this;
 
         this.createGame = function(gameObj, cb){
-          console.log('socketsFactory');
           socket.emit("gameCreate", gameObj, function(returned_data){
-            console.log('returned_data at socketsFactory: ', returned_data);
+            // returned_data = war.gameState()
             cb(returned_data);
           });
         };
@@ -16,11 +15,14 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
         // Start Game method
 
         // Join Game methodd
-
+        this.joinGame = function(joinObj, cb){
+            socket.emit("joinGame", joinObj, function(obj){
+            cb(obj);
+          });
+        };
         // Show Games method (index)
         this.showGames = function(game_name, cb){
           socket.emit("showGames", game_name, function(data){
-            console.log("data", data);
             cb(data);
           });
         };

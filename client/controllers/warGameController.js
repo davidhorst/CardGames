@@ -28,7 +28,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   };
 
   // Join Game
-  $scope.handleJoinGame = function(game){
+  $scope.handleJoinGame = function(){
     $scope.games.forEach(function(game){
       if (game.capacity[0] != game.capacity[1]) {
         joinObj = { userName: $scope.user.user_name, gameId: game.gameId }

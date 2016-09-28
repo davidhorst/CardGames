@@ -67,6 +67,9 @@ class War {
         //helper to always keep player turns bound by numplayers
         numPlayers = playerMap.length;
         playerTurn = (playerTurn + 1) % numPlayers;
+        if(this.playerMap[playerTurn]).outOfCards == true) {
+            nextPlayerTurn();
+        }
     }
 
     resolveCardsOnBoard() {
@@ -88,6 +91,31 @@ class War {
                 bestCard.push(boardObj);
             }
         });
+        //if a player has run out of cards, remove them from the game
+        removeLosers();
+        winnerCheck();
+    }
+
+
+
+    removeLosers() {
+        this.playerMap.forEach(function(player) {
+            if(player.hand.length === 0) {
+                player.outOfCards = true;
+            }
+        });
+    }
+
+    winnerCheck() {
+        let playersWithCards = [];
+        this.playerMap.forEach(function(player) {
+            if(player.hand.length > 0) {
+                playersWithCards.push(player);
+            }
+        });
+        if(playersWithCards.length === 1){
+            this.gameState = 'Over';
+        }
     }
 
     recieveAction(playerId, data, io) {

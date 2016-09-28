@@ -11,6 +11,7 @@ class War {
         this.PlayerTurn = null;
         this.Deck = new Deck();
         this.cardsOnBoard = [];
+        
     }
 
     getState() {

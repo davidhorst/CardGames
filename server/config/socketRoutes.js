@@ -43,8 +43,6 @@ class SocketRoutes {
 
         socket.on('joinGame', function(data, cb) {
            let game = runningGames.get(data.gameId);
-           console.log('game');
-           console.log(game);
            socket.join(data.gameId);
            let player = game.add(data.userName, socket.id)
            let obj = {player: player, gameState: game.getState()};

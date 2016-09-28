@@ -23,13 +23,22 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
         // Show Games method (index)
         this.showGames = function(game_name, cb){
           socket.emit("showGames", game_name, function(data){
-            console.log('socketsFactory callback');
             cb(data);
           });
         };
 
-        ////  Socket Responses  ////
+        // Return Current messages
+        this.getMessages = function(cb){
+          socket.emit("getMessages", function(data){
+            cb(data);
+          });
+        };
 
+        this.addMessage = function(msgObj, cb){
+          socket.emit('addMessage', msgObj ,function(){
+            cb();
+          });
+        };
 
    };
 

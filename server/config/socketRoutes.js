@@ -1,7 +1,7 @@
 'use strict';
 var runningGames = require('./../runningGames.js');
 var War = require('./../games/war.js');
-
+var messages = [];
 class SocketRoutes {
     constructor() {
 
@@ -12,7 +12,6 @@ class SocketRoutes {
 
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
-          console.log('showgame server')
           cb({ data : gamesArr });
           // socket.emit('showGames', { data: gamesArr })
         });
@@ -32,15 +31,22 @@ class SocketRoutes {
                     war.add(data.userName, socket.id);
                     // return data to the socketsFactory
                     cb(war.getState());
+                    let messageObj = {
+                      gameId: war.gameId,
+                      username: "Marvin",
+                      message: `${data.userName} started a game of War`
+                    };
+                    messages.push(messageObj);
+                    io.emit('updateMessages', messages);
                     break;
 
             }
             // join socket to game room
             socket.join(gameId);
             // returns game state
-            socket.emit('gameCreated', gameState );
+            // socket.emit('gameCreated', gameState );
             // emit message to entire room
-            io.to(gameId).emit('returnMessage', 'this is a test');
+            // io.to(gameId).emit('returnMessage', 'this is a test');
         });
 
         socket.on('joinGame', function(data, cb) {
@@ -56,7 +62,17 @@ class SocketRoutes {
         socket.on('gameMessage', function(data) {
           //player is sending data to current game. the game needs to be informed and parse the data
           const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
-          io.to(data.gameId).emit("gameResponse", newState);
+          io.to(data.gameId).emit(newState);
+        });
+
+        // return existing messages to requesting client
+        socket.on("getMessages", function(cb){
+          cb({ data : messages });
+        });
+
+        socket.on('addMessage', function(msgObj, cb){
+          messages.push(msgObj);
+          cb();
         });
 
         function guid(){

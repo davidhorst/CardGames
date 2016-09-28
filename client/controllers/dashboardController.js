@@ -4,6 +4,16 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory', 's
         $location.path("/");
     }
 
+    var getMessages = function(){
+        socketsFactory.getMessages(function(returned_data){
+            $scope.$apply(function(){
+              $scope.messages = returned_data.data;
+            });
+        });
+    };
+
+    getMessages();
+
     $scope.user = usersFactory.getCurrentUser();
 
     $scope.game = { name: null };
@@ -20,12 +30,23 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory', 's
 
     // Send a message
     $scope.message;
-    $scope.sendMessage = function() {
-        socketsFactory.sendMessage($scope.message)
-        $scope.message;
+    $scope.newMessage = function() {
+        let msgObj = {
+            username: $scope.user.user_name,
+            message: $scope.message
+        }
+        socketsFactory.addMessage(msgObj, function(){
+          getMessages();
+        })
+        $scope.message = null;
     };
 
     // Recieve messages
+    socketsFactory.socket.on('updateMessages', function(data) {
+        $scope.$apply(function(){
+          $scope.messages = data;
+        });
+    });
 
 
 

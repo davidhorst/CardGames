@@ -2,25 +2,16 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   $scope.user = usersFactory.getCurrentUser();
   $scope.gameState = null;
-  var tempGames;
+
   var getGames = function(){
       socketsFactory.showGames('war', function(returned_data){
-          console.log('controller callback');
-
-          tempGames = returned_data;
-          console.log(tempGames);
           $scope.$apply(function(){
-            $scope.games = tempGames.data;
+            $scope.games = returned_data.data;
           });
       });
   };
 
   getGames();
-
-
-  socketsFactory.socket.on('test', function(data) {
-      // console.log(data);
-  });
 
   // Create Game
   $scope.handleCreateGame = function() {

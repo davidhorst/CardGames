@@ -10,7 +10,8 @@ class SocketRoutes {
     add(socket, io) {
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
-          cb({ data: gamesArr });
+          console.log('showgame server')
+          socket.emit('showGames', { data: gamesArr })
         });
 
         socket.on('gameCreate', function(data, cb){
@@ -45,6 +46,7 @@ class SocketRoutes {
            let player = game.add(data.userName, socket.id)
            console.log("player :", player);
            let obj = {player: player, gameState: game.getState()};
+           io.emit('joinedGame', 'testing')
            cb(obj);
         });
 

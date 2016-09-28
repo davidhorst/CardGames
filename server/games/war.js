@@ -67,6 +67,8 @@ class War {
         //helper to always keep player turns bound by numplayers
         numPlayers = playerMap.length;
         playerTurn = (playerTurn + 1) % numPlayers;
+
+        //skips players who are out of cards
         if(this.playerMap[playerTurn].outOfCards == true) {
             nextPlayerTurn();
         }
@@ -101,6 +103,7 @@ class War {
     removeLosers() {
         this.playerMap.forEach(function(player) {
             if(player.hand.length === 0) {
+                //if true, when next player is called anyone with outOfCards will be skipped
                 player.outOfCards = true;
             }
         });

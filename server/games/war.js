@@ -36,6 +36,7 @@ class War {
             }
         });
         //if no player objects soket ids have been dropped, create a new user
+
        const id_player_obj = {}
        id_player_obj[socketId] = player;
        this.playerMap.push(id_player_obj);

@@ -23,12 +23,17 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
         // Show Games method (index)
         this.showGames = function(game_name, cb){
           socket.emit("showGames", game_name, function(data){
-            console.log('socketsFactory callback');
+            // console.log('socketsFactory callback');
             cb(data);
           });
         };
 
-    
+        //causes all connected users to get game state
+        this.getGameState = function(game_name) {
+            socket.emit("gameMessage", game_name);
+        }
+
+
         ////  Socket Responses  ////
 
 

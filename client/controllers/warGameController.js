@@ -5,10 +5,10 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   var tempGames;
   var getGames = function(){
       socketsFactory.showGames('war', function(returned_data){
-          console.log('controller callback');
+        //   console.log('controller callback');
 
           tempGames = returned_data;
-          console.log(tempGames);
+        //   console.log(tempGames);
           $scope.$apply(function(){
             $scope.games = tempGames.data;
           });
@@ -17,46 +17,46 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   getGames();
 
-
-  socketsFactory.socket.on('test', function(data) {
-      // console.log(data);
-  });
-
   // Create Game
   $scope.handleCreateGame = function() {
       const gameObj = {'gameName': 'war', 'userName':  $scope.user.user_name};
       socketsFactory.createGame(gameObj, function(returned_data){
         $scope.currentGame = returned_data;
+         $scope.$apply(function(){
+             socketsFactory.socket.gameId = returned_data.gameId
+         });
         getGames();
+        $scope.state = returned_data.state
+         $scope.$digest();
       });
   };
 
   // Join Game
   $scope.handleJoinGame = function(game){
-      console.log('game');
-      console.log(game);
     $scope.games.forEach(function(game){
-        console.log('game');
-        console.log(game);
       if (game.capacity[0] != game.capacity[1]) {
         joinObj = { userName: $scope.user.user_name, gameId: game.gameId }
         socketsFactory.joinGame(joinObj, function(returned_obj){
           $scope.currentGame = returned_obj.gameState;
+          socketsFactory.socket.gameId = returned_obj.gameId
           getGames();
            $scope.state = game.state
-          $scope.$digest();
+
         });
       };
     });
   };
 
-
-
 // socket.on Responses
 
   socketsFactory.socket.on('gameResponse', function(gameState) {
       //depending on the state of the program, show the game state differently
-       $scope.state = gameState.state
+      $scope.$apply(function(){
+          $scope.state = gameState.state
+          $scope.gameId = gameState.gameId
+          $scope.playersGameId = socketsFactory.socket.gameId;
+
+      });
     //   if(gameState.state == 'waiting') {
     //       $scope.state = gameState.state
     //   }
@@ -70,9 +70,4 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
     //   }
 
   });
-
-
-
-
-
 }]);

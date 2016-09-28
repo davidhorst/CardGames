@@ -4,12 +4,9 @@ var War = require('./../games/war.js');
 
 class SocketRoutes {
     constructor() {
-
     }
 
     add(socket, io) {
-        socket.emit('test', "testdata");
-
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
           console.log('showgame server')
@@ -32,6 +29,7 @@ class SocketRoutes {
                     war.add(data.userName, socket.id);
                     // return data to the socketsFactory
                     cb(war.getState());
+
                     break;
 
             }
@@ -40,24 +38,29 @@ class SocketRoutes {
             // returns game state
             socket.emit('gameCreated', gameState );
             // emit message to entire room
-            io.to(gameId).emit('returnMessage', 'this is a test');
+            io.to(gameId).emit("gameResponse", gameState);
         });
 
         socket.on('joinGame', function(data, cb) {
            let game = runningGames.get(data.gameId);
+           console.log('game');
+           console.log(game);
            socket.join(data.gameId);
            let player = game.add(data.userName, socket.id)
            let obj = {player: player, gameState: game.getState()};
            let message = `${player.name} has joined the game`;
            io.emit('joinedGame', message)
+           io.to(data.gameId).emit("gameResponse", game.getState());
            cb(obj);
         });
 
         socket.on('gameMessage', function(data) {
           //player is sending data to current game. the game needs to be informed and parse the data
           const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
+          console.log('gameResonse')
           io.to(data.gameId).emit("gameResponse", newState);
         });
+
 
         function guid(){
             function s4() {

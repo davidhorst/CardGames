@@ -1,5 +1,5 @@
 * { 
-  outline: 1px dotted red; 
+  /*outline: 1px dotted red; */
 }
 body{
   background-color: rgb(28,55,70);
@@ -13,5 +13,12 @@ div.stuff {
   height: 200px;
 }
 span.highlighter {
+  display: inline-block;
   background-color: yellow;
+}
+.row {
+  margin-bottom: 5px;
+}
+ul {
+  
 }

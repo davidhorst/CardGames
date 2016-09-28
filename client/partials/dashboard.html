@@ -1,16 +1,16 @@
-
-<div class="row"> <!-- Start dirty spacer -->
-  <p></p>
-</div> <!-- End dirty spacer -->
+<!-- DASHBOARD PARTIAL -->
 <div class="row container">
-  <div class="col s2"> <!-- Start Left Column -->
+  <div class="col s3"> <!-- Start Left Column -->
     <div class="user-display">
       <div class="display-background row">
-        <img style="height: 70px; width: 100%;" src="assets/images/blue-gray-box.png" alt="raspberry jam" />
+        <img style="width: 100%;" src="assets/images/panda.png" alt="raspberry jam" />
       </div>
       <div class="user-details row">
-        <img class="left col s4 responsive-img"src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
-        <h5><a class="black-text" href="/#/users/{{user.user_id}}">{{user.user_name}}</a></h5>
+        <a class="black-text" href="/#/users/{{user.user_id}}">
+          <img class="left col s4 responsive-img"src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
+          <h5> {{user.user_name}} <i class="material-icons">mode_edit</i></h5>
+        </a>
+        <br>
         <div class="game-stats">
           <div class="col s4">
             <p>Played</p>
@@ -31,20 +31,22 @@
       <div class="row game-button">
         <div class="col s12">
           <div class="card-panel green darken-3" ng-click="handleLaunchGame('war');">
-            <span class="white-text align center">War</span>
+            <span class="white-text align center">War <i class="material-icons">new_releases</i></span>
+
+            
           </div>
         </div>
       </div>
       <div class="row game-button">
         <div class="col s12">
           <div class="card-panel green darken-3" ng-click="handleJoinGame('euchre');">
-            <span class="white-text align center">Euchre</span>
+            <span class="white-text align center">Euchre <i class="material-icons">build</i></span>
           </div>
         </div>
       </div>
     </div><!-- End Gam Buttons -->
   </div><!-- End Left Column -->
-  <div class="col s10"><!-- Start Right Column -->
+  <div class="col s9"><!-- Start Right Column -->
     <div class="row col s12 card green darken-3" ng-show="game.name === 'war'" ng-controller="warGameController">
       <div class="align center">
         <h5 class="white-text" style="margin: 0px;">now playing:</h5>
@@ -63,7 +65,25 @@
       </div>
     </div>
     <div class="row col s12 card">
-      <input style="margin: 0px;" type="text" name="name" value="">
+      <input style="margin: 0px;" type="text" name="name" placeholder="Let the world know you're here!">
+      <i class='material-icons'>message</i>
+    </div>
+    <div class="row col s12 card">
+      
+      
+
+        <ul class="collapsible" data-collapsible="accordion">
+          <li>
+            <div class="collapsible-header">File Bug Report <i class='material-icons'>bug_report</i></div>
+            <div class="collapsible-body">
+              <input style="margin: 0px;" type="text" name="bug_report" placeholder="Report a web/game bug/problem.">
+            </div>
+          </li>
+        </ul>
+
     </div>
   </div> <!-- End War Game Board -->
 </div>
+
+
+<script type="text/javascript" src="assets/js/script.js"></script>

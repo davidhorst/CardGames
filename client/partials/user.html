@@ -1,36 +1,78 @@
-
-<div class="user-detail-body container">
-  <div class="align center">
-    <div class="user-details row">
-<!--       <img style="height: 70px; width: 100%;" src="assets/images/blue-gray-box.png" alt="raspberry jam" /> -->
-      <h5>
-        <div class="stuff">
-          <img src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
-        </div>
-        You are known as "<b>{{user.name}}</b>".<span class="highlighter"> <-- Has NOT upgraded to premium!</span>
-      </h5>
-      <div class="game-stats">
-        <div class="col s3">
-          <h5>Played</h5>
-          <p>{{user.history.total}}</p>
-        </div>
-        <div class="col s3">
-          <h5>Wins</h5>
-          <p>{{user.history.wins}}</p>
-        </div>
-        <div class="col s3">
-          <h5>Loses</h5>
-          <p>{{user.history.losses}}</p>
-        </div>
-        <div class="col s3">
-          <h5>Email</h5>
-          <p>{{user.email}}</p>
-        </div>
-        <h5>Testing Only</h5>
-        <p>Hashed Password: {{user.password}}</p>
-        <p>Currently playing "{{user.current_game}}". Enjoy! </p>
+<!-- USER PARTIAL -->
+<div class="row container">
+  <div class="col s3"> <!-- Start Left Column -->
+    <div class="user-display">
+      <div class="display-background row">
+        <img style="width: 100%;" src="assets/images/panda.png" alt="raspberry jam" />
       </div>
-    </div>
-  </div>
-</div> <!-- End User Display Box -->
+      <div class="user-details row">
+        <img class="left col s4 responsive-img"src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
+        <h5> {{user.name}} </h5>
+        <br>
+      </div>
+      <a href="/#/dashboard">Return to Dashboard <i class="material-icons">done</i></a>
+    </div> <!-- End User Display Box -->
+  </div><!-- End Left Column -->
+  <div class="col s9"><!-- Start Right Column -->
 
+    <div class="user-detail-body">
+      <div class="align center">
+        <div class="user-details row">
+          <h5><span class="highlighter"><a class="black-text" href>Upgrade to Premium <i class="material-icons">credit_card</i></a></span></h5>
+          <div class="game-stats">
+            <div class="col s3">
+              <h5>Played <i class="material-icons">widgets</i></h5>
+              <p>{{user.history.total}}</p>
+            </div>
+            <div class="col s3">
+              <h5>Wins <i class="material-icons">mood</i></h5>
+              <p>{{user.history.wins}}</p>
+            </div>
+            <div class="col s3">
+              <h5>Loses <i class="material-icons">sentiment_very_dissatisfied</i></h5>
+              <p>{{user.history.losses}}</p>
+            </div>
+            <div class="col s3">
+              <h5>Email <i class="material-icons">email</i></h5>
+              <p>{{user.email}}</p>
+            </div>
+            <h5>Testing Only</h5>
+            <p>Hashed Password: {{user.password}}</p>
+            <p>Currently playing "{{user.current_game}}". Enjoy! </p>
+          </div>
+        </div>
+
+        
+
+
+        <ul class="collapsible" data-collapsible="accordion">
+          <li>
+            <div class="collapsible-header">Update Profile From <i class="material-icons">perm_identity</i></div>
+            <div class="collapsible-body">
+              <form id="update" method="POST">
+                <input type="text" name="email" placeholder="Enter Your New Email">
+                Replace Red Panda picture.<input type="file" name="newPanda"><br>
+                Update Your Profile Pick                  <input type="file" name="newProfile">
+                <input type="password" name="password" placeholder="Enter Your Password">
+                <input type="submit" value="Update">
+              </form>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header">Change Password <i class="material-icons">vpn_key</i></div>
+            <div class="collapsible-body">
+              <form id="newpass" method="POST">
+                <input type="password" name="oldpw" placeholder="Enter Your Old Password">
+                <input type="password" name="newpw" placeholder="Enter Your New Password">
+                <input type="submit" value="Change Password">
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div> <!-- End User Display Box -->
+
+  </div> <!-- End War Game Board -->
+</div>
+
+<script type="text/javascript" src="assets/js/script.js"></script>

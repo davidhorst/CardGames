@@ -43,6 +43,7 @@ class SocketRoutes {
             // returns game state
             // socket.emit('gameCreated', gameState );
             // emit message to entire room
+            socket.broadcast("updateGames");
             io.to(gameId).emit("gameResponse", gameState);
 
         });

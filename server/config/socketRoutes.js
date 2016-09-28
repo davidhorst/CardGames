@@ -40,10 +40,12 @@ class SocketRoutes {
         });
 
         socket.on('joinGame', function(data, cb) {
-           console.log("data: ",data);
            let game = runningGames.get(data.gameId);
            socket.join(data.gameId);
-           game.add(data.userName, socket.id)
+           let player = game.add(data.userName, socket.id)
+           console.log("player :", player);
+           let obj = {player: player, gameState: game.getState()};
+           cb(obj);
         });
 
         socket.on('gameMessage', function(data) {

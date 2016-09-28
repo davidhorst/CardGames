@@ -16,8 +16,8 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
 
         // Join Game methodd
         this.joinGame = function(joinObj, cb){
-          socket.emit("joinGame", joinObj, function(data){
-            cb(data);
+            socket.emit("joinGame", joinObj, function(obj){
+            cb(obj);
           });
         };
         // Show Games method (index)

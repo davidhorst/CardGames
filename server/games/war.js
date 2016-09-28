@@ -40,6 +40,7 @@ class War {
        const id_player_obj = {}
        id_player_obj[socketId] = player;
        this.playerMap.push(id_player_obj);
+       return player
     }
 
     // Remove player from game instance

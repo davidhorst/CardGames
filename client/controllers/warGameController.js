@@ -27,8 +27,8 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
     $scope.games.forEach(function(game){
       if (game.capacity[0] != game.capacity[1]) {
         joinObj = { userName: $scope.user.user_name, gameId: game.gameId }
-        socketsFactory.joinGame(joinObj, function(returned_data){
-          $scope.currentGame = returned_data;
+        socketsFactory.joinGame(joinObj, function(returned_obj){
+          $scope.currentGame = returned_obj.gameState;
           getGames();
           $scope.$digest();
         });

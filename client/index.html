@@ -6,7 +6,7 @@
 
     <title>Card Game</title>
 
-    <link type="text/css" rel="stylesheet" href="./../materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="./../materialize/dist/css/materialize.css"  media="screen,projection"/>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   </head>
   <body>
@@ -29,24 +29,26 @@
     <script src="./../controllers/leaderboardController.js"></script>
     <script src="./../controllers/warGameController.js"></script>
 
-
-    <script type="text/javascript" src="./../materialize/dist/js/materialize.min.js"></script>
+    <script type="text/javascript" src="./../materialize/dist/js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 
     <nav class="grey lighten-4">
       <div class="nav-wrapper container" ng-controller="dashboardController">
-        <a href="/#/dashboard" class="brand-logo center"><img style="margin-top: 5px; height:50px;" class="responsive-img" src="./../assets/images/cards-logo.png" alt="blueberry pancakes" /></a>
+
         <ul id="nav-mobile" class="left hide-on-med-and-down">
           <li><a class="black-text" href>Home</a></li>
           <li><a class="black-text" href="/#/leaderboard">Leaderboard</a></li>
           <li><a class="black-text" href>Upgrade to Premium</a></li>
         </ul>
+        <a href="/#/dashboard"><img style="margin-top: 5px; height:50px;" class="responsive-img" src="./../assets/images/cards-logo.png" alt="blueberry pancakes" /></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a class="black-text" href>Logout</a></li>
+          <li><a class="black-text" href>Logout </a></li>
         </ul>
       </div>
     </nav>
+    <div class="row"> <!-- Start dirty spacer -->
+    <p></p>
+    </div> <!-- End dirty spacer -->
     <div ng-view>
 
     </div>

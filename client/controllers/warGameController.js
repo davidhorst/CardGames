@@ -17,6 +17,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   getGames();
 
+
   socketsFactory.socket.on('test', function(data) {
       // console.log(data);
   });
@@ -42,6 +43,15 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       };
     });
   };
+
+// socket.on Responses
+
+  // socketsFactory.socket.on('gameResponse', function(gameState) {
+  //     if(gameState.state)
+  //     $scope.currentPlayer = gameState.
+  // });
+
+
 
 
 

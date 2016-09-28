@@ -30,9 +30,6 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
 
         ////  Socket Responses  ////
 
-        socket.on('returnMessage', function(data) {
-
-        });
 
    };
 

@@ -67,7 +67,7 @@ class War {
         //helper to always keep player turns bound by numplayers
         numPlayers = playerMap.length;
         playerTurn = (playerTurn + 1) % numPlayers;
-        if(this.playerMap[playerTurn]).outOfCards == true) {
+        if(this.playerMap[playerTurn].outOfCards == true) {
             nextPlayerTurn();
         }
     }
@@ -115,6 +115,7 @@ class War {
         });
         if(playersWithCards.length === 1){
             this.gameState = 'Over';
+            //put in code to emit to player they won
         }
     }
 

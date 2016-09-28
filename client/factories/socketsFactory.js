@@ -27,12 +27,21 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
           });
         };
 
+
         // Return Current messages
         this.getMessages = function(cb){
           socket.emit("getMessages", function(data){
             cb(data);
           });
         };
+
+        //causes all connected users to get game state
+        this.getGameState = function(game_name) {
+            socket.emit("gameMessage", game_name);
+        };
+
+
+        ////  Socket Responses  ////
 
         this.addMessage = function(msgObj, cb){
           socket.emit('addMessage', msgObj ,function(){

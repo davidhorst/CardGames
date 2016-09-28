@@ -4,12 +4,9 @@ var War = require('./../games/war.js');
 var messages = [];
 class SocketRoutes {
     constructor() {
-
     }
 
     add(socket, io) {
-        socket.emit('test', "testdata");
-
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
           cb({ data : gamesArr });
@@ -46,7 +43,8 @@ class SocketRoutes {
             // returns game state
             // socket.emit('gameCreated', gameState );
             // emit message to entire room
-            // io.to(gameId).emit('returnMessage', 'this is a test');
+            io.to(gameId).emit("gameResponse", gameState);
+
         });
 
         socket.on('joinGame', function(data, cb) {
@@ -56,6 +54,7 @@ class SocketRoutes {
            let obj = {player: player, gameState: game.getState()};
            let message = `${player.name} has joined the game`;
            io.emit('joinedGame', message)
+           io.to(data.gameId).emit("gameResponse", game.getState());
            cb(obj);
         });
 
@@ -74,6 +73,7 @@ class SocketRoutes {
           messages.push(msgObj);
           cb();
         });
+
 
         function guid(){
             function s4() {

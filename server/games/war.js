@@ -10,6 +10,7 @@ class War {
         this.state = 'waiting';
         this.PlayerTurn = null;
         this.Deck = new Deck();
+        this.cardsOnBoard = [];
     }
 
     getState() {
@@ -117,7 +118,7 @@ class War {
             }
         });
         if(playersWithCards.length === 1){
-            this.state = 'Over';
+            this.state = 'gameOver';
             //put in code to emit to player they won
         }
     }
@@ -125,6 +126,11 @@ class War {
     recieveAction(playerId, data, io) {
         //this is the state machine which will validate if the user and action
         // are acceptable and returns the new states of the ui to all users
+
+        if(!data){
+             return getState();
+        }
+
         if(this.state == 'waiting') {
             if(data.startGame) {
                 this.deal();

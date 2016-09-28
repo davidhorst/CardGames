@@ -1,1 +1,6 @@
-<p>war game</p>
+  <p>war game</p>
+  <button ng-click='handleCreateGame("war")'>Create WAR</button>
+  <button ng-click='handleJoinGame("war")'>Join WAR</button>
+<p ng-show="state == 'waiting'">waiting</p>
+<p ng-show="state == 'playing'">playing</p>
+<p ng-show="state == 'gameOver'">over</p>

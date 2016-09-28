@@ -117,7 +117,7 @@ class War {
             }
         });
         if(playersWithCards.length === 1){
-            this.state = 'Over';
+            this.state = 'gameOver';
             //put in code to emit to player they won
         }
     }

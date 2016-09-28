@@ -66,22 +66,20 @@
       <div class="align right card">
         <button class="btn blue-grey lighten-5 black-text" ng-click="leaveGame();">Leave Game</button>
       </div>
-    </div>
-    <div class="row col s12 card">
-      <input style="margin: 0px;" type="text" name="name" placeholder="Let the world know you're here!">
-      <i class='material-icons'>message</i>
-    </div>
-    <div class="row col s12 card">
+    </div> <!-- End War Game Board -->
+    <div class="row col s12 card"> <!-- Start Message input form -->
+      <form ng-submit="newMessage();">
+        <input ng-model="message" style="margin: 0px;" type="text" placeholder="Let the world know you're here!" class="col s11">
+        <button class="btn white waves-effect waves-dark col s1" type="submit" name="action">
+          <i class="black material-icons">send</i>
+        </button>
+      </form>
+    </div><!-- end Message input form -->
+    <div class="row col s12 card"> <!-- Message list -->
+      <div ng-repeat="msgObj in messages">
+        <p><b>{{ msgObj.username }} :</b> {{ msgObj.message }}</p>
+      </div>
+    </div><!-- Message list -->
 
-        <ul class="collapsible" data-collapsible="accordion">
-          <li>
-            <div class="collapsible-header">File Bug Report <i class='material-icons'>bug_report</i></div>
-            <div class="collapsible-body">
-              <input style="margin: 0px;" type="text" name="bug_report" placeholder="Report a web/game bug/problem.">
-            </div>
-          </li>
-        </ul>
-
-    </div>
-  </div> <!-- End War Game Board -->
+  </div>
 </div>

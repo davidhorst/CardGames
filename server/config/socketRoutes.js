@@ -8,6 +8,7 @@ class SocketRoutes {
     }
 
     add(socket, io) {
+        socket.emit('test', "testdata");
         socket.on("showGames", function(data, cb){
           const gamesArr = runningGames.show(data);
           console.log('showgame server')

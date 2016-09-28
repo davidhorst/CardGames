@@ -7,10 +7,15 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
     socketsFactory.showGames('war', function(returned_data){
         $scope.games = returned_data.data;
         console.log('games:', $scope.games);
+
     });
   };
 
   getGames();
+
+  socketsFactory.socket.on('test', function(data) {
+      console.log(data)
+  });
 
   // Create Game
   $scope.handleCreateGame = function() {
@@ -30,6 +35,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
         socketsFactory.joinGame(joinObj, function(returned_obj){
           $scope.currentGame = returned_obj.gameState;
           getGames();
+
           $scope.$digest();
         });
       };

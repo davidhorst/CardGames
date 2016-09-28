@@ -4,7 +4,7 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
 
     function socketsFactory(){
         var self = this;
-
+        self.socket = socket;
         this.createGame = function(gameObj, cb){
           socket.emit("gameCreate", gameObj, function(returned_data){
             // returned_data = war.gameState()

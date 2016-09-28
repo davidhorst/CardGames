@@ -1,11 +1,11 @@
-* { 
+* {
   /*outline: 1px dotted red; */
 }
 body{
-  background-color: rgb(28,55,70);
+  /*background-color: rgb(28,55,70);*/
 }
 div {
-  background-color: white;
+  /*background-color: white;*/
 }
 div.stuff {
   display: inline-block;
@@ -20,5 +20,5 @@ span.highlighter {
   margin-bottom: 5px;
 }
 ul {
-  
+
 }

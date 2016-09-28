@@ -87,15 +87,6 @@ class War {
                 bestCard.push(boardObj);
             }
         });
-
-        if(bestCard.length == 0) {
-            //one player won. they get all the cards!
-            for(let i = 0; i < this.cardsOnBoard.length; i++) {
-                bestCard[0].player.hand.append(this.cardsOnBoard[i].card);
-            }
-        } else {
-            //multiple players won. they go to war!!
-        }
     }
 
     recieveAction(playerId, data, io) {
@@ -121,10 +112,21 @@ class War {
             }
         }
         if(this.gameState == 'playing') {
-            // if(this.PlayerTurn == this.playerMap[data
-            //     //gameTurn will be a PlayerObj
-        }
-        return getState();
+                  //grabing out the current players ID
+            if(Object.keys(playerMap[this.playerTurn])[0] == this.playerId) {
+                if(data.playedCard) {
+                 const player = playerMap[this.playerTurn][this.playerId]
+                 this.cardsOnBoard.append({player:player, card:player.shift()})
+                }
+             }
+         }
+         if(cardsOnBoard == playerMap.length) {
+             this.resolveCardsOnBoard();
+         }
+         this.nextPlayerTurn();
+
+
+         return getState();
     } // End recieveAction
 
 } // End War Class

@@ -9,4 +9,6 @@
 <p ng-show="gameId">{{gameId}}</p>
 <p ng-show="playersGameId">{{playersGameId}}</p>-->
 <button ng-click='handlePlayCard()'>playcard</button>
-<textarea ng-bind='log'></textarea>
+<div ng-repeat='item in log'>
+    <p ng-bind='item'></p>
+</div>

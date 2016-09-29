@@ -70,16 +70,21 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
      getGames();
  });
 
- socketsFactory.socket.on('gameResponse', function(gameState) {
 
-  socketsFactory.socket.on('winningCard', function(message) {
-      console.log('winning card')
-      console.log(message.message[0].card.name)
-      $scope.log = message.message[0].card.name
+  socketsFactory.socket.on('winningCard', function(boardObj) {
+      console.log('boardObj');
+      console.log(boardObj);
+      console.log(boardObj.player.name);
+      $scope.log.push(`${boardObj.player.name} won with: ${boardObj.card.name}`)
   });
-      //depending on the state of the program, show the game state differently
 
-      console.log('gameResonse')
+  socketsFactory.socket.on('playedCard', function(boardObj) {
+      $scope.log.push(`${boardObj.player.name} played ${boardObj.card.name}`)
+  });
+
+
+  socketsFactory.socket.on('gameResponse', function(gameState) {
+      //depending on the state of the program, show the game state differently
       if(gameState.state == 'waiting') {
           $scope.$apply(function(){
               $scope.state = gameState.state;

@@ -61,8 +61,6 @@ class SocketRoutes {
 
         socket.on('gameMessage', function(data) {
           //player is sending data to current game. the game needs to be informed and parse the data
-          console.log('data.gameId')
-          console.log(data.gameId)
           const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
           io.to(data.gameId).emit("gameResponse", newState);
           io.to(data.gameId).emit('enterRoom');

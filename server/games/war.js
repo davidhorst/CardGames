@@ -96,10 +96,7 @@ class War {
                 bestCard.push(boardObj);
             }
         });
-        //if a player has run out of cards, remove them from the game
-        console.log('bestCard')
-        console.log(bestCard)
-        io.to(this.gameId).emit('winningCard', {message: bestCard});
+        io.to(this.gameId).emit('winningCard', bestCard[0]);
         this.cardsOnBoard = [];
         this.removeLosers();
         this.winnerCheck();
@@ -143,7 +140,6 @@ class War {
                 this.playerTurn = 0;
                 this.state = 'playing'
                 //emits data updating peoples games
-                console.log('changed to playing')
                 return this.getState();
             }
             else if(data.joinGame) {
@@ -168,13 +164,14 @@ class War {
                 })
                 if(! playedCard) {
                     const player = this.playerMap[this.playerTurn];
-                 this.cardsOnBoard.push({player:player, card: player.hand.shift()})
+                    const playedCard =  player.hand.shift();
+                    const boardObj = {player:player, card:playedCard};
+                    io.to(this.gameId).emit('playedCard', boardObj);
+                     this.cardsOnBoard.push(boardObj);
                 }
             }
          }
-         console.log('board', this.cardsOnBoard, 'map len', this.playerMap.length);
          if(this.cardsOnBoard.length == this.playerMap.length) {
-             console.log('resolving cards on board');
              this.resolveCardsOnBoard(io);
 
          }

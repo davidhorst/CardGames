@@ -40,8 +40,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   // Join Game
   $scope.handleJoinGame = function(){
-      console.log('join game')
-
     $scope.games.forEach(function(game){
       if (game.capacity[0] != game.capacity[1]) {
           console.log('open seat')

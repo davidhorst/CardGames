@@ -5,7 +5,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   $scope.log = [];
   // $scope.currentGame = usersFactory.getCurrentGame(user.user_id);
 
-  console.log($scope.user);
 
   var getGames = function(){
       socketsFactory.showGames('war', function(returned_data){

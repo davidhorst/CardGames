@@ -27,7 +27,7 @@ class War {
     }
 
     // Add Player to game instance
-    add(userName, socketId) {
+    add(userName, userId,socketId) {
         const player = new Player(userName, userId, socketId);
 
         //bug when a player leaves game.... how to tell...

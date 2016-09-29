@@ -14,15 +14,15 @@
         <div class="game-stats">
           <div class="col s4">
             <p>Played</p>
-            <p>47</p>
+            <p>{{ user.history.total }}</p>
           </div>
           <div class="col s4">
             <p>Wins</p>
-            <p>32</p>
+            <p>{{ user.history.wins }}</p>
           </div>
           <div class="col s4">
             <p>Loses</p>
-            <p>15</p>
+            <p>{{ user.history.losses }}</p>
           </div>
         </div>
       </div>
@@ -67,8 +67,8 @@
                       <th>Join</th>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="game in games | filter: fullGames('capacity', 4)">
-                        <td>Bob</td>
+                      <tr ng-repeat="game in games | filter: fullGames('capacity')">
+                        <td>{{ game.playerMap[0].name }}</td>
                         <td>{{ game.capacity[0] }}</td>
                         <td><button class="btn" ng-click="handleJoinGame(game.gameId);"> Join Game </button></td>
                       </tr>
@@ -81,7 +81,15 @@
             </div>
             <div id="players" ng-repeat="player in currentGame.playerMap">
               <div class="card green darken-4">
-                <h3>Hello</h3>
+                <div class="card-content row">
+                  <div class="col s3 center-align">
+                    <h3>{{ player.name }}</h3>
+                    <button class="btn" ng-show="currentGame.state === 'playing'" ng-click="handlePlayCard();">Play</button>
+                  </div>
+                  <div class="col s9 row">
+                      <img class="col s3 responsive-img" src="assets/images/cards/card_back.jpg" alt="mango">
+                  </div>
+                </div>
               </div>
             </div>
             <form class="right-align">

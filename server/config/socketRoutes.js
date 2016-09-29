@@ -30,7 +30,7 @@ class SocketRoutes {
                     cb(war.getState());
                     let messageObj = {
                       gameId: war.gameId,
-                      username: "Marvin",
+                      username: "Host",
                       message: `${data.userName} started a game of War`
                     };
                     messages.push(messageObj);
@@ -43,7 +43,7 @@ class SocketRoutes {
             // returns game state
             // socket.emit('gameCreated', gameState );
             // emit message to entire room
-            socket.broadcast.emit("updateGames");
+            io.emit("updateGames");
             io.to(gameId).emit("gameResponse", gameState);
 
         });
@@ -54,21 +54,16 @@ class SocketRoutes {
            let player = game.add(data.userName, socket.id)
            let obj = {player: player, gameState: game.getState()};
            let message = `${player.name} has joined the game`;
-           io.emit('joinedGame', message)
-           io.to(data.gameId).emit("gameResponse", game.getState());
+           io.emit('joinedGame', message);
+           io.to(data.gameId).emit("gameResponse", game.getState() );
            cb(obj);
         });
 
         socket.on('gameMessage', function(data) {
           //player is sending data to current game. the game needs to be informed and parse the data
-          console.log('data.gameId')
-          console.log(data.gameId)
           const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
-          io.to(data.gameId).emit('enterRoom');
-          io.to(data.gameId).emit("gameResponse", newState);
+          io.to(data.gameId).emit(newState);
         });
-
-
 
         // return existing messages to requesting client
         socket.on("getMessages", function(cb){
@@ -77,6 +72,7 @@ class SocketRoutes {
 
         socket.on('addMessage', function(msgObj, cb){
           messages.push(msgObj);
+          io.emit('updateMessages', { data: messages} )
           cb();
         });
 

@@ -13,7 +13,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   getGames();
 
-  $scope.fullGames = function(prop, val){
+  $scope.fullGames = function(prop){
 
     return function(item){
       return item[prop][0] < item[prop][1];
@@ -66,12 +66,10 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   socketsFactory.socket.on('gameResponse', function(gameState) {
       //depending on the state of the program, show the game state differently
 
-      console.log('gameResonse')
       if(gameState.state == 'waiting') {
           $scope.$apply(function(){
-              $scope.state = gameState.state;
+              $scope.currentGame = gameState;
               $scope.playersGameId = socketsFactory.socket.gameId;
-
           });
       }
       else if(gameState.state == 'playing')

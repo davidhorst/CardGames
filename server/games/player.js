@@ -8,7 +8,14 @@ class Player {
         this.socketId = socketId;
     }
     getCard(deck) {
-        this.hand.push(deck.deal());
+        console.log('deck');
+        console.log(deck);
+        let card = deck.deal();
+        console.log('card');
+        console.log(card);
+        if(card) {
+            this.hand.push(card);
+        }
     }
 
     discard() {

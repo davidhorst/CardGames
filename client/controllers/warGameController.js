@@ -72,11 +72,44 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
 
   socketsFactory.socket.on('winningCard', function(boardObj) {
-      $scope.log.push(`${boardObj.player.name} won with: ${boardObj.card.name}`)
+      $scope.$apply(function(){
+           $scope.log = [];
+          $scope.log.push(`${boardObj.player.name} won with: ${boardObj.card.name}`)
+      });
+  });
+
+  socketsFactory.socket.on('warMessage', function(boardObj) {
+      console.log('warwarwar')
+      let message = 'Players';
+      console.log(boardObj)
+      boardObj.forEach(function(obj) {
+          console.log(obj.player.name)
+          message = message + " " + obj.player.name;
+      });
+      message = message + ' are in a war!';
+      console.log('message');
+      console.log(message);
+       $scope.$apply(function(){
+          $scope.log.push(message);
+      });
   });
 
   socketsFactory.socket.on('playedCard', function(boardObj) {
-      $scope.log.push(`${boardObj.player.name} played ${boardObj.card.name}`)
+      $scope.$apply(function(){
+          $scope.log.push(`${boardObj.player.name} played ${boardObj.card.name}`)
+    });
+  });
+
+  socketsFactory.socket.on('playerLost', function(player) {
+      $scope.$apply(function(){
+      $scope.log.push(`${player.name} ran out of cards`)
+    });
+  });
+
+  socketsFactory.socket.on('gameOver', function(boardObj) {
+      $scope.$apply(function(){
+          $scope.log.push('some one won?!')
+      });
   });
 
 

@@ -9,6 +9,6 @@
 <p ng-show="gameId">{{gameId}}</p>
 <p ng-show="playersGameId">{{playersGameId}}</p>-->
 <button ng-click='handlePlayCard()'>playcard</button>
-<div ng-repeat='item in log'>
+<div ng-repeat='item in log | reverse'>
     <p ng-bind='item'></p>
 </div>

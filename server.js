@@ -1,14 +1,15 @@
 'use strict';
 const express    = require( 'express' ),
-    bp           = require('body-parser'),
-    expressjwt   = require('express-jwt'),
-    jwt          = require('jsonwebtoken'),
-    path         = require('path'),
-    cookieparser = require("cookie-parser"),
-    socketRoutes = require('./server/config/socketRoutes'),
-    root         = __dirname,
-    port         = process.env.PORT || 8000,
-    app          = express();
+      bp           = require('body-parser'),
+      expressjwt   = require('express-jwt'),
+      jwt          = require('jsonwebtoken'),
+      path         = require('path'),
+      cookieparser = require("cookie-parser"),
+      // socketRoutes = require('./server/config/socketRoutes'),
+      root         = __dirname,
+      port         = process.env.PORT || 8000,
+      app          = express();
+
 app.use(express.static(path.join(root, './client' )));
 app.use(express.static(path.join(root, 'bower_components' )));
 app.use(bp.json());
@@ -20,7 +21,12 @@ app.use(expressjwt({
 
 
 require('./server/config/mongoose.js');
-require('./server/config/routes.js')(app);
+
+var users = require('./server/controllers/users.js');
+const socketRoutes = require('./server/config/socketRoutes');
+
+require('./server/config/routes.js')(app, users);
+
 
 const server = app.listen( port, function() {
   console.log( `server running on port ${ port }` );

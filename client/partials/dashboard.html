@@ -57,7 +57,7 @@
             </div>
             <div id="pre-game" class="row" ng-hide="currentGame">
                 <div class="row center-align">
-                  <button class="btn" ng-click="handleCreateGame();"> Start a new game </button>
+                  <button class="btn" ng-click="handleCreateGame();"> Create a new game </button>
                 </div>
                 <div class="row center-align">
                   <table class="table col s6 offset-s3">
@@ -103,21 +103,18 @@
     </div> <!-- End War Game Board -->
     <div class="row col s12 card"> <!-- Start Message input form -->
       <form ng-submit="newMessage();">
-<!--         <input ng-model="message" style="margin: 0px;" type="text" placeholder="Let the world know you're here!" class="col s11"> -->
-
-        <div class="input-field col s11">
+        <div class="input-field col s11 ">
           <i class='material-icons prefix'>message</i>
-          <input id="message" type="text" name="message" placeholder="Let the world know you're here.">
+          <input id="message" type="text" placeholder="Let the world know you're here." ng-model="message" autocomplete="off">
         </div>
-
-        <button class="btn white waves-effect waves-dark col s1" type="submit" name="action">
+        <button class="btn white waves-effect waves-dark col s1 input-field" type="submit" name="action">
           <i class="black material-icons">send</i>
         </button>
       </form>
     </div><!-- end Message input form -->
     <div class="row col s12 card"> <!-- Message list -->
-      <div ng-repeat="msgObj in messages">
-        <p><b>{{ msgObj.username }} :</b> {{ msgObj.message }}</p>
+      <div ng-repeat="msgObj in messages | orderBy: '-createdAt'">
+        <p><b>{{ msgObj.username }} :</b> {{ msgObj.message }} -- <span am-time-ago="msgObj.createdAt"></span></p>
       </div>
     </div><!-- Message list -->
 

@@ -33,7 +33,8 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory', 's
     $scope.newMessage = function() {
         let msgObj = {
             username: $scope.user.user_name,
-            message: $scope.message
+            message: $scope.message,
+            createdAt: new Date()
         }
         socketsFactory.addMessage(msgObj, function(){
           getMessages();

@@ -44,7 +44,7 @@ var UsersSchema = new mongoose.Schema({
       wins: {type: Number, default: 0},
       losses: {type: Number, default: 0},
     },
-    current_game: {
+    currentGame: {
       type: String
     },
 },

@@ -3,6 +3,9 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   $scope.user = usersFactory.getCurrentUser();
   $scope.gameState = null;
   $scope.log = [];
+  // $scope.currentGame = usersFactory.getCurrentGame(user.user_id);
+
+  console.log($scope.user);
 
   var getGames = function(){
       socketsFactory.showGames('war', function(returned_data){
@@ -23,20 +26,32 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   // Create Game
   $scope.handleCreateGame = function() {
-      const gameObj = {'gameName': 'war', 'userName':  $scope.user.user_name};
+      const gameObj = {
+              gameName: 'war',
+              userName: $scope.user.user_name,
+              userId: $scope.user.user_id};
+
+      // usersFactory.setCurrentGame(gameObj);
+
       socketsFactory.createGame(gameObj, function(returned_data){
           $scope.$apply(function(){
               $scope.currentGame = returned_data;
               $scope.state = returned_data.state
           });
           socketsFactory.socket.gameId = returned_data.gameId
-        getGames();
+          getGames();
       });
   };
 
   $scope.handleStartGame = function() {
-      socketsFactory.startGame( {userName: $scope.user.user_name, gameId:socketsFactory.socket.gameId, startGame: true});
-  }
+
+      let gameObj = {
+        userName: $scope.user.user_name,
+        gameId:socketsFactory.socket.gameId,
+        startGame: true}
+
+      socketsFactory.startGame(gameObj);
+  };
 
   socketsFactory.socket.on('enterRoom', function() {
       console.log('change room')
@@ -53,7 +68,11 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   // Join Game
 
   $scope.handleJoinGame = function(gameId){
-      joinObj = { userName: $scope.user.user_name, gameId: gameId }
+      let joinObj = {
+                userName: $scope.user.user_name,
+                userId: $scope.user.user_id,
+                gameId: gameId};
+
       socketsFactory.socket.gameId = gameId
       socketsFactory.joinGame(joinObj, function(returned_obj){
           getGames();
@@ -64,6 +83,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
           });
       });
   };
+
 
   // socket.on Responses
  socketsFactory.socket.on('updateGames', function() {

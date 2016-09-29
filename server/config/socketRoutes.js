@@ -64,8 +64,8 @@ class SocketRoutes {
           console.log('data.gameId')
           console.log(data.gameId)
           const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
-          io.to(data.gameId).emit('enterRoom');
           io.to(data.gameId).emit("gameResponse", newState);
+          io.to(data.gameId).emit('enterRoom');
         });
 
 

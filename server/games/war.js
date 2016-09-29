@@ -60,7 +60,7 @@ class War {
     deal() {
         this.Deck.shuffle();
         const numPlayers = this.playerMap.length;
-        for(let i=0; i<=51; i++) {
+        for(let i=1; i<=52; i++) {
             let playerIdx = i%numPlayers;
             this.playerMap[playerIdx].getCard(this.Deck);
         }
@@ -77,7 +77,7 @@ class War {
         }
     }
 
-    resolveCardsOnBoard() {
+    resolveCardsOnBoard(io) {
         // logic to find winner of round
             // default value is always beatable
         let bestCard = [{rank: 0}];
@@ -97,8 +97,12 @@ class War {
             }
         });
         //if a player has run out of cards, remove them from the game
-        removeLosers();
-        winnerCheck();
+        console.log('bestCard')
+        console.log(bestCard)
+        io.to(this.gameId).emit('winningCard', {message: bestCard});
+        this.cardsOnBoard = [];
+        this.removeLosers();
+        this.winnerCheck();
     }
 
 
@@ -155,15 +159,24 @@ class War {
         }
         if(this.state == 'playing') {
                   //grabing out the current players ID
-            if( this.playerMap[this.playerTurn] == this.playerId) {
-                if(data.playedCard) {
+            if(data.playCard) {
+                let playedCard = false;
+                this.cardsOnBoard.forEach(function(card) {
+                    if(card.player.playerId == playerId) {
+                        playedCard = true;
+                    }
+                })
+                if(! playedCard) {
                     const player = this.playerMap[this.playerTurn];
-                 this.cardsOnBoard.push({player:player, card:player.shift()})
+                 this.cardsOnBoard.push({player:player, card: player.hand.shift()})
                 }
-             }
+            }
          }
-         if(this.cardsOnBoard == this.playerMap.length) {
-             this.resolveCardsOnBoard();
+         console.log('board', this.cardsOnBoard, 'map len', this.playerMap.length);
+         if(this.cardsOnBoard.length == this.playerMap.length) {
+             console.log('resolving cards on board');
+             this.resolveCardsOnBoard(io);
+
          }
          this.nextPlayerTurn();
 

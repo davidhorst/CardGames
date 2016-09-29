@@ -42,9 +42,9 @@ app.controller('dashboardController', ['$scope', '$location', 'usersFactory', 's
     };
 
     // Recieve messages
-    socketsFactory.socket.on('updateMessages', function(data) {
+    socketsFactory.socket.on('updateMessages', function(returned_data) {
         $scope.$apply(function(){
-          $scope.messages = data;
+          $scope.messages = returned_data.data;
         });
     });
 

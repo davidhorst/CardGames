@@ -14,15 +14,15 @@
         <div class="game-stats">
           <div class="col s4">
             <p>Played</p>
-            <p>47</p>
+            <p>{{ user.history.total }}</p>
           </div>
           <div class="col s4">
             <p>Wins</p>
-            <p>32</p>
+            <p>{{ user.history.wins }}</p>
           </div>
           <div class="col s4">
             <p>Loses</p>
-            <p>15</p>
+            <p>{{ user.history.losses }}</p>
           </div>
         </div>
       </div>
@@ -67,8 +67,8 @@
                       <th>Join</th>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="game in games | filter: fullGames('capacity', 4)">
-                        <td>Bob</td>
+                      <tr ng-repeat="game in games | filter: fullGames('capacity')">
+                        <td>{{ game.playerMap[0].name }}</td>
                         <td>{{ game.capacity[0] }}</td>
                         <td><button class="btn" ng-click="handleJoinGame(game.gameId);"> Join Game </button></td>
                       </tr>
@@ -81,7 +81,15 @@
             </div>
             <div id="players" ng-repeat="player in currentGame.playerMap">
               <div class="card green darken-4">
-                <h3>Hello</h3>
+                <div class="card-content row">
+                  <div class="col s3 center-align">
+                    <h3>{{ player.name }}</h3>
+                    <button class="btn" ng-show="currentGame.state === 'playing'" ng-click="handlePlayCard();">Play</button>
+                  </div>
+                  <div class="col s9 row">
+                      <img class="col s3 responsive-img" src="assets/images/cards/card_back.jpg" alt="mango">
+                  </div>
+                </div>
               </div>
             </div>
             <form class="right-align">
@@ -95,7 +103,13 @@
     </div> <!-- End War Game Board -->
     <div class="row col s12 card"> <!-- Start Message input form -->
       <form ng-submit="newMessage();">
-        <input ng-model="message" style="margin: 0px;" type="text" placeholder="Let the world know you're here!" class="col s11">
+<!--         <input ng-model="message" style="margin: 0px;" type="text" placeholder="Let the world know you're here!" class="col s11"> -->
+
+        <div class="input-field col s11">
+          <i class='material-icons prefix'>message</i>
+          <input id="message" type="text" name="message" placeholder="Let the world know you're here.">
+        </div>
+
         <button class="btn white waves-effect waves-dark col s1" type="submit" name="action">
           <i class="black material-icons">send</i>
         </button>
@@ -106,6 +120,14 @@
         <p><b>{{ msgObj.username }} :</b> {{ msgObj.message }}</p>
       </div>
     </div><!-- Message list -->
+
+    <div class="row col s12 card">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">bug_report</i>
+        <input id="bug" type="text" name="bug">
+        <label for="bug">Submit Bug Report</label>
+      </div>
+    </div>
 
   </div>
 </div>

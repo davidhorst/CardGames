@@ -1,16 +1,13 @@
 * {
   /*outline: 1px dotted red; */
 }
-body{
-  /*background-color: rgb(28,55,70);*/
-}
-div {
-  /*background-color: white;*/
-}
 div.stuff {
   display: inline-block;
   width: 200px;
   height: 200px;
+}
+div.collapsible-body {
+  background-color: #cddcff;
 }
 span.highlighter {
   display: inline-block;
@@ -18,7 +15,4 @@ span.highlighter {
 }
 .row {
   margin-bottom: 5px;
-}
-ul {
-
 }

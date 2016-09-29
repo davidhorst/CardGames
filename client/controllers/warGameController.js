@@ -72,9 +72,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
 
   socketsFactory.socket.on('winningCard', function(boardObj) {
-      console.log('boardObj');
-      console.log(boardObj);
-      console.log(boardObj.player.name);
       $scope.log.push(`${boardObj.player.name} won with: ${boardObj.card.name}`)
   });
 

@@ -80,28 +80,90 @@ class War {
     resolveCardsOnBoard(io) {
         // logic to find winner of round
             // default value is always beatable
-        let bestCard = [{rank: 0}];
-
+        let bestCardObj = [];
         //iterate over all played cards
         this.cardsOnBoard.forEach(function(boardObj) {
 
             //if current card is bigger than current winning rank
-            if(boardObj.card.rank > bestCard[0].rank) {
-                bestCard = [];
-                bestCard.push(boardObj);
-            }
-
-            //if current card ties current best rank
-            else if(boardObj.card.rank == bestCard[0].rank) {
-                bestCard.push(boardObj);
+            if(bestCardObj.length == 0){
+                bestCardObj.push(boardObj);
+            } else {
+                if(boardObj.card.rank > bestCardObj[0].card.rank) {
+                    bestCardObj = [];
+                    bestCardObj.push(boardObj);
+                }
+                //if current card ties current best rank
+                else if(boardObj.card.rank == bestCardObj[0].card.rank) {
+                    bestCardObj.push(boardObj);
+                }
             }
         });
-        io.to(this.gameId).emit('winningCard', bestCard[0]);
+        let pot = this.cardsOnBoard;
+        if(bestCardObj.length > 1) {
+
+            //add emit for goto war!!!!!!!
+
+            const winner = this.goToWar(bestCardObj, pot, io)
+            winner.pot.forEach(function(boardObj) {
+                    winner.player.hand.push(boardObj.card);
+            });
+
+        } else {
+
+            this.cardsOnBoard.forEach(function(boardObj) {
+                bestCardObj[0].player.hand.push(boardObj.card);
+            });
+        io.to(this.gameId).emit('winningCard', bestCardObj[0]);
         this.cardsOnBoard = [];
         this.removeLosers();
         this.winnerCheck();
+
+        }
     }
 
+        //bestCard = [{player:player, card:card}]
+    goToWar(bestCardObj, pot,  io) {
+        let cardsOnBoard = []
+        bestCardObj.foreach(function(bordObj) {
+            let card = boardObj.player.hand.shift()
+            // emit card
+            pot.push(card);
+            card = boardObj.player.hand.shift()
+            // emit card
+            pot.push(card);
+            card = boardObj.player.hand.shift()
+            // emit card
+            cardsOnBoard.push(card);
+        });
+
+        this.cardsOnBoard.forEach(function(boardObj) {
+            if(bestCardObj.length == 0){
+                bestCardObj.push(boardObj);
+            } else {
+                if(boardObj.card.rank > bestCardObj[0].card.rank) {
+                    bestCardObj = [];
+                    bestCardObj.push(boardObj);
+                }
+                else if(boardObj.card.rank == bestCardObj[0].card.rank) {
+                    bestCardObj.push(boardObj);
+                }
+            }
+        });
+
+        if(bestCardObj.length > 1) {
+
+            //add emit for goto war again!
+
+            const winner = this.goToWar(bestCardObj, pot, io)
+            winner.pot.forEach(function(boardObj) {
+                    winner.player.hand.push(boardObj.card);
+            });
+            return
+        //return {player:player, pot -> [{player},{card}]}
+        } else {
+            return {player: bestCardObj.player, pot}
+        }
+    }
 
 
     removeLosers() {

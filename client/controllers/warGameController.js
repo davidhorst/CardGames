@@ -17,34 +17,27 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   $scope.handleCreateGame = function() {
       const gameObj = {'gameName': 'war', 'userName':  $scope.user.user_name};
       socketsFactory.createGame(gameObj, function(returned_data){
-        $scope.currentGame = returned_data;
-         $scope.$apply(function(){
-             socketsFactory.socket.gameId = returned_data.gameId
-         });
+          $scope.$apply(function(){
+              $scope.currentGame = returned_data;
+              $scope.state = returned_data.state
+          });
+          socketsFactory.socket.gameId = returned_data.gameId
         getGames();
-        $scope.state = returned_data.state
-         $scope.$digest();
       });
   };
 
   // Join Game
-  $scope.handleJoinGame = function(){
-    $scope.games.forEach(function(game){
-      if (game.capacity[0] != game.capacity[1]) {
-          console.log('open seat')
-        joinObj = { userName: $scope.user.user_name, gameId: game.gameId }
-        socketsFactory.socket.gameId = game.gameId
-        socketsFactory.joinGame(joinObj, function(returned_obj){
-            getGames();
-            console.log('returned to the join game vis cb')
-            $scope.$apply(function(){
-                $scope.currentGame = returned_obj.gameState;
-                socketsFactory.socket.gameId = game.gameId
-                $scope.state = game.state
-            });
-        });
-      };
-    });
+  $scope.handleJoinGame = function(gameId){
+      joinObj = { userName: $scope.user.user_name, gameId: gameId }
+      socketsFactory.socket.gameId = gameId
+      socketsFactory.joinGame(joinObj, function(returned_obj){
+          getGames();
+          $scope.$apply(function(){
+              $scope.currentGame = returned_obj.gameState;
+              socketsFactory.socket.gameId = gameId
+              // $scope.state = game.state
+          });
+      });
   };
 
   // socket.on Responses

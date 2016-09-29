@@ -14,6 +14,11 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
           });
         };
 
+        //player plays card if possible
+        this.playCard = function(gameObj) {
+            socket.emit("gameMessage", gameObj)
+        }
+
         // Start Game method
         this.startGame = function(gameObj) {
             socket.emit("gameMessage", gameObj);

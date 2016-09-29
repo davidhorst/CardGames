@@ -27,21 +27,20 @@ class War {
 
     // Add Player to game instance
     add(userName, socketId) {
-        console.log(userName, socketId);
-        const player = new Player(userName);
-        console.log(player);
-        this.playerMap.forEach(function(playerId) {
-            //if there is a player object with a blank socketId, fill that in first. ( because a player dropped )
-            if(Object.keys(playerId)[0] == '') {
-                Object.keys(playerId)[0] == socketId;
-                return player;
-            }
-        });
+        const player = new Player(userName, socketId);
+
+        //bug when a player leaves game.... how to tell...
+
+        // this.playerMap.forEach(function(playerObj) {
+        //     //if there is a player object with a blank socketId, fill that in first. ( because a player dropped )
+        //         Object.keys(playerId)[0] == socketId;
+        //         return playerObj;
+        //     }
+        // });
         //if no player objects soket ids have been dropped, create a new user
 
-       const id_player_obj = {}
-       id_player_obj[socketId] = player;
-       this.playerMap.push(id_player_obj);
+
+       this.playerMap.push(player);
        return player
     }
 
@@ -58,15 +57,11 @@ class War {
 
 
     deal() {
+        this.Deck.shuffle();
         const numPlayers = this.playerMap.length;
-        for(let i=0; i<=52; i++) {
+        for(let i=0; i<=51; i++) {
             let playerIdx = i%numPlayers;
-            console.log('numPlayers')
-            console.log(numPlayers)
-            console.log(playerIdx)
-            console.log(this.playerMap[playerIdx])
-            let playerId = Object.keys(this.playerMap[playerIdx])[0]
-            this.playerMap[playerIdx][playerId].getCard(this.Deck);
+            this.playerMap[playerIdx].getCard(this.Deck);
         }
     }
 
@@ -159,9 +154,9 @@ class War {
         }
         if(this.state == 'playing') {
                   //grabing out the current players ID
-            if(Object.keys(this.playerMap[this.playerTurn])[0] == this.playerId) {
+            if( this.playerMap[this.playerTurn] == this.playerId) {
                 if(data.playedCard) {
-                 const player = this.playerMap[this.playerTurn][this.playerId]
+                    const player = this.playerMap[this.playerTurn];
                  this.cardsOnBoard.push({player:player, card:player.shift()})
                 }
              }

@@ -42,12 +42,10 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   $scope.handleJoinGame = function(){
     $scope.games.forEach(function(game){
       if (game.capacity[0] != game.capacity[1]) {
-          console.log('open seat')
         joinObj = { userName: $scope.user.user_name, gameId: game.gameId }
         socketsFactory.socket.gameId = game.gameId
         socketsFactory.joinGame(joinObj, function(returned_obj){
             getGames();
-            console.log('returned to the join game vis cb')
             $scope.$apply(function(){
                 $scope.currentGame = returned_obj.gameState;
                 socketsFactory.socket.gameId = game.gameId
@@ -68,9 +66,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
       console.log('gameResonse')
       if(gameState.state == 'waiting') {
-          console.log(gameState)
-          console.log('$$$$$$$ waiting')
-
           $scope.$apply(function(){
               $scope.state = gameState.state;
               $scope.playersGameId = socketsFactory.socket.gameId;
@@ -79,14 +74,8 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       }
       else if(gameState.state == 'playing')
       {
-          console.log('$$$$$$$ playing')
-          $scope.$apply(function(){
-
-
-
-          });
+          console.log(gameState)
       }
-
       else if(gameState.state == 'gameOver') {
 
       }

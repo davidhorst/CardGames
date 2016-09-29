@@ -14,6 +14,13 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   getGames();
 
+  $scope.fullGames = function(prop, val){
+
+    return function(item){
+      return item[prop][0] < item[prop][1];
+    }
+  };
+
   // Create Game
   $scope.handleCreateGame = function() {
       const gameObj = {'gameName': 'war', 'userName':  $scope.user.user_name};

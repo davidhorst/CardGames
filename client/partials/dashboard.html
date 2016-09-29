@@ -67,7 +67,7 @@
                       <th>Join</th>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="game in games">
+                      <tr ng-repeat="game in games | filter: fullGames('capacity', 4)">
                         <td>Bob</td>
                         <td>{{ game.capacity[0] }}</td>
                         <td><button class="btn" ng-click="handleJoinGame(game.gameId);"> Join Game </button></td>
@@ -78,6 +78,11 @@
             </div>
             <div id="waiting-for-players" class="row center-align" ng-show="currentGame.state === 'waiting'">
                 <button class="btn" ng-click="handleStartGame();">Start Game</button>
+            </div>
+            <div id="players" ng-repeat="player in currentGame.playerMap">
+              <div class="card green darken-4">
+                <h3>Hello</h3>
+              </div>
             </div>
             <form class="right-align">
               <div class="input-field">

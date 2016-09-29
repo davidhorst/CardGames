@@ -44,6 +44,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   })
 
   // Join Game
+
   $scope.handleJoinGame = function(gameId){
       joinObj = { userName: $scope.user.user_name, gameId: gameId }
       socketsFactory.socket.gameId = gameId
@@ -67,9 +68,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
       console.log('gameResonse')
       if(gameState.state == 'waiting') {
-          console.log(gameState)
-          console.log('$$$$$$$ waiting')
-
           $scope.$apply(function(){
               $scope.state = gameState.state;
               $scope.playersGameId = socketsFactory.socket.gameId;
@@ -78,14 +76,8 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       }
       else if(gameState.state == 'playing')
       {
-          console.log('$$$$$$$ playing')
-          $scope.$apply(function(){
-
-
-
-          });
+          console.log(gameState)
       }
-
       else if(gameState.state == 'gameOver') {
 
       }

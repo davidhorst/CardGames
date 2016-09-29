@@ -2,7 +2,8 @@
 
 class Deck {
     constructor(){
-        this.ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10","11", "12", "13","14"];
+        // this.ranks = [2, 2, 2, 2];
+        this.ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10,11, 12, 13,14];
         this.makeDeck();
     }
 
@@ -24,7 +25,7 @@ class Deck {
     shuffle() {
         for(var i in this.deck) {
             var tempCard = this.deck[i];
-            var randIndex = Math.floor(Math.random()*52+1);
+            var randIndex = Math.floor(Math.random()*this.deck.length+1);
             this.deck[i] = this.deck[randIndex];
             this.deck[randIndex] = tempCard;
         }

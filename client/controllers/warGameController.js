@@ -2,6 +2,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   $scope.user = usersFactory.getCurrentUser();
   $scope.gameState = null;
+  $scope.log = [];
 
   var getGames = function(){
       socketsFactory.showGames('war', function(returned_data){
@@ -35,13 +36,19 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
 
   $scope.handleStartGame = function() {
       socketsFactory.startGame( {userName: $scope.user.user_name, gameId:socketsFactory.socket.gameId, startGame: true});
-    //   $location.path('/cardgame/war')
-
   }
 
   socketsFactory.socket.on('enterRoom', function() {
-      $location.path('/cardgame/war')
+      console.log('change room')
+       $scope.$apply(function(){
+          $location.path('/cardgame/war')
+      })
   })
+
+  $scope.handlePlayCard = function() {
+      const gameObj =  {userName: $scope.user.user_name, gameId:socketsFactory.socket.gameId, playCard: true};
+      socketsFactory.playCard(gameObj)
+  }
 
   // Join Game
 
@@ -63,9 +70,21 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
      getGames();
  });
 
+
+  socketsFactory.socket.on('winningCard', function(boardObj) {
+      console.log('boardObj');
+      console.log(boardObj);
+      console.log(boardObj.player.name);
+      $scope.log.push(`${boardObj.player.name} won with: ${boardObj.card.name}`)
+  });
+
+  socketsFactory.socket.on('playedCard', function(boardObj) {
+      $scope.log.push(`${boardObj.player.name} played ${boardObj.card.name}`)
+  });
+
+
   socketsFactory.socket.on('gameResponse', function(gameState) {
       //depending on the state of the program, show the game state differently
-
       if(gameState.state == 'waiting') {
           $scope.$apply(function(){
               $scope.currentGame = gameState;
@@ -81,4 +100,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       }
 
   });
+
+
 }]);

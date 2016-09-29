@@ -1,6 +1,49 @@
-<div class="row container">
+<!-- <div class="row container"> -->
   <div class="title align center">
-    <h5>Leaderboard</h5>
+    <h5>Leaderboard : Top 10</h5><a href="/#/dashboard">Return to Dashboard</a>
     <hr/>
   </div>
+
+<div ng-repeat="n in [1,2,3,4,5,6,7,8,9,10] track by $index">
+<div class="row container">
+  <div class="col s3"> <!-- Start Left Column -->
+    <div class="user-display">
+      <div class="display-background row">
+        <img style="width: 100%;" src="assets/images/panda.png" alt="raspberry jam" />
+      </div>
+      <div class="user-details row">
+        <img class="left col s4 responsive-img"src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
+        <h5> -- {{user.name}} </h5>
+        <br>
+      </div>
+    </div> <!-- End User Display Box -->
+  </div><!-- End Left Column -->
+
+  <div class="col s9"><!-- Start Right Column -->
+    <!-- <div class="user-detail-body"> -->
+      <div class="align center">
+        <div class="user-details row">
+          <div class="row col s12 card">
+            <div class="game-stats">
+              <div class="col s4">
+                <h5>Played <i class="material-icons">widgets</i></h5>
+                <p>-- {{user.history.total}}</p>
+              </div>
+              <div class="col s4">
+                <h5>Wins <i class="material-icons">mood</i></h5>
+                <p>-- {{user.history.wins}}</p>
+              </div>
+              <div class="col s4">
+                <h5>Loses <i class="material-icons">sentiment_very_dissatisfied</i></h5>
+                <p>-- {{user.history.losses}}</p>
+              </div>
+              <p>Currently playing a game of "{{user.current_game}}".</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div> <!-- End War Game Board -->
+
 </div>
+</div>
+<!-- </div> -->

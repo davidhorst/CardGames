@@ -60,7 +60,7 @@ class War {
     deal() {
         this.Deck.shuffle();
         const numPlayers = this.playerMap.length;
-        for(let i=0; i<=51; i++) {
+        for(let i=1; i<=52; i++) {
             let playerIdx = i%numPlayers;
             this.playerMap[playerIdx].getCard(this.Deck);
         }
@@ -77,7 +77,7 @@ class War {
         }
     }
 
-    resolveCardsOnBoard() {
+    resolveCardsOnBoard(io) {
         // logic to find winner of round
             // default value is always beatable
         let bestCard = [{rank: 0}];
@@ -96,9 +96,10 @@ class War {
                 bestCard.push(boardObj);
             }
         });
-        //if a player has run out of cards, remove them from the game
-        removeLosers();
-        winnerCheck();
+        io.to(this.gameId).emit('winningCard', bestCard[0]);
+        this.cardsOnBoard = [];
+        this.removeLosers();
+        this.winnerCheck();
     }
 
 
@@ -139,7 +140,6 @@ class War {
                 this.playerTurn = 0;
                 this.state = 'playing'
                 //emits data updating peoples games
-                console.log('changed to playing')
                 return this.getState();
             }
             else if(data.joinGame) {
@@ -155,15 +155,25 @@ class War {
         }
         if(this.state == 'playing') {
                   //grabing out the current players ID
-            if( this.playerMap[this.playerTurn] == this.playerId) {
-                if(data.playedCard) {
+            if(data.playCard) {
+                let playedCard = false;
+                this.cardsOnBoard.forEach(function(card) {
+                    if(card.player.playerId == playerId) {
+                        playedCard = true;
+                    }
+                })
+                if(! playedCard) {
                     const player = this.playerMap[this.playerTurn];
-                 this.cardsOnBoard.push({player:player, card:player.shift()})
+                    const playedCard =  player.hand.shift();
+                    const boardObj = {player:player, card:playedCard};
+                    io.to(this.gameId).emit('playedCard', boardObj);
+                     this.cardsOnBoard.push(boardObj);
                 }
-             }
+            }
          }
-         if(this.cardsOnBoard == this.playerMap.length) {
-             this.resolveCardsOnBoard();
+         if(this.cardsOnBoard.length == this.playerMap.length) {
+             this.resolveCardsOnBoard(io);
+
          }
          this.nextPlayerTurn();
 

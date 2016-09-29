@@ -53,13 +53,14 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   };
 
   socketsFactory.socket.on('enterRoom', function() {
-      console.log('change room')
-       $scope.$apply(function(){
-          $location.path('/cardgame/war')
-      })
+      // console.log('change room')
+      //  $scope.$apply(function(){
+      //     $location.path('/cardgame/war')
+      // })
   })
 
   $scope.handlePlayCard = function() {
+      console.log('played card');
       const gameObj =  {userName: $scope.user.user_name, gameId:socketsFactory.socket.gameId, playCard: true};
       socketsFactory.playCard(gameObj)
   }
@@ -142,7 +143,10 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       }
       else if(gameState.state == 'playing')
       {
-          console.log(gameState)
+        $scope.$apply(function(){
+            $scope.currentGame = gameState;
+            $scope.playersGameId = socketsFactory.socket.gameId;
+        });
       }
       else if(gameState.state == 'gameOver') {
 

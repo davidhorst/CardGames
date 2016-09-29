@@ -84,9 +84,12 @@
                 <div class="card-content row">
                   <div class="col s3 center-align">
                     <h3>{{ player.name }}</h3>
-                    <button class="btn" ng-show="currentGame.state === 'playing'" ng-click="handlePlayCard();">Play</button>
+                    <button class="btn" ng-show="currentGame.state === 'playing'" ng-click='handlePlayCard()'>Play</button>
                   </div>
                   <div class="col s9 row">
+                      <div ng-repeat='item in log | reverse'>
+                          <p ng-bind='item'></p>
+                      </div>
                       <img class="col s3 responsive-img" src="assets/images/cards/card_back.jpg" alt="mango">
                   </div>
                 </div>

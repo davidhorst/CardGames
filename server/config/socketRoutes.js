@@ -43,7 +43,7 @@ class SocketRoutes {
             // returns game state
             // socket.emit('gameCreated', gameState );
             // emit message to entire room
-            socket.broadcast("updateGames");
+            socket.broadcast.emit("updateGames");
             io.to(gameId).emit("gameResponse", gameState);
 
         });
@@ -61,9 +61,14 @@ class SocketRoutes {
 
         socket.on('gameMessage', function(data) {
           //player is sending data to current game. the game needs to be informed and parse the data
+          console.log('data.gameId')
+          console.log(data.gameId)
           const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
-          io.to(data.gameId).emit(newState);
+          io.to(data.gameId).emit('enterRoom');
+          io.to(data.gameId).emit("gameResponse", newState);
         });
+
+
 
         // return existing messages to requesting client
         socket.on("getMessages", function(cb){

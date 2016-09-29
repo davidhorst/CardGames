@@ -8,10 +8,10 @@ class War {
         this.gameId = gameId;
         this.playerMap = []
         this.state = 'waiting';
-        this.PlayerTurn = null;
+        this.playerTurn = null;
         this.Deck = new Deck();
         this.cardsOnBoard = [];
-        
+
     }
 
     getState() {
@@ -58,20 +58,25 @@ class War {
 
 
     deal() {
-        const numPlayers = playerMap.length;
-        for(const i=0; i<=52; i++) {
-            const PlayerIdx = i%numPlayers;
-            playeMap[1].getCard(this.Deck);
+        const numPlayers = this.playerMap.length;
+        for(let i=0; i<=52; i++) {
+            let playerIdx = i%numPlayers;
+            console.log('numPlayers')
+            console.log(numPlayers)
+            console.log(playerIdx)
+            console.log(this.playerMap[playerIdx])
+            let playerId = Object.keys(this.playerMap[playerIdx])[0]
+            this.playerMap[playerIdx][playerId].getCard(this.Deck);
         }
     }
 
     nextPlayerTurn() {
         //helper to always keep player turns bound by numplayers
-        numPlayers = playerMap.length;
-        playerTurn = (playerTurn + 1) % numPlayers;
+        const numPlayers = this.playerMap.length;
+        this.playerTurn = (this.playerTurn + 1) % numPlayers;
 
         //skips players who are out of cards
-        if(this.playerMap[playerTurn].outOfCards == true) {
+        if(this.playerMap[this.playerTurn].outOfCards == true) {
             nextPlayerTurn();
         }
     }
@@ -129,16 +134,17 @@ class War {
         // are acceptable and returns the new states of the ui to all users
 
         if(!data){
-             return getState();
+             return this.getState();
         }
 
         if(this.state == 'waiting') {
             if(data.startGame) {
                 this.deal();
-                this.PlayerTurn = 0;
+                this.playerTurn = 0;
                 this.state = 'playing'
                 //emits data updating peoples games
-                return getState();
+                console.log('changed to playing')
+                return this.getState();
             }
             else if(data.joinGame) {
                 //only allow up to 4 users to join game
@@ -147,26 +153,26 @@ class War {
                     //if the user is taking someones seat, they need that persons player information
                     var player = this.add(data.userName, playerId)
                     playerId.emit('gameJoined', player )
-                    return getState();
+                    return this.getState();
                 }
             }
         }
         if(this.state == 'playing') {
                   //grabing out the current players ID
-            if(Object.keys(playerMap[this.playerTurn])[0] == this.playerId) {
+            if(Object.keys(this.playerMap[this.playerTurn])[0] == this.playerId) {
                 if(data.playedCard) {
-                 const player = playerMap[this.playerTurn][this.playerId]
-                 this.cardsOnBoard.append({player:player, card:player.shift()})
+                 const player = this.playerMap[this.playerTurn][this.playerId]
+                 this.cardsOnBoard.push({player:player, card:player.shift()})
                 }
              }
          }
-         if(cardsOnBoard == playerMap.length) {
+         if(this.cardsOnBoard == this.playerMap.length) {
              this.resolveCardsOnBoard();
          }
          this.nextPlayerTurn();
 
 
-         return getState();
+         return this.getState();
     } // End recieveAction
 
 } // End War Class

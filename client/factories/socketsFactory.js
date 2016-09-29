@@ -5,6 +5,8 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
     function socketsFactory(){
         var self = this;
         self.socket = socket;
+
+
         this.createGame = function(gameObj, cb){
           socket.emit("gameCreate", gameObj, function(returned_data){
             // returned_data = war.gameState()
@@ -13,6 +15,9 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
         };
 
         // Start Game method
+        this.startGame = function(gameObj) {
+            socket.emit("gameMessage", gameObj);
+        }
 
         // Join Game methodd
         this.joinGame = function(joinObj, cb){

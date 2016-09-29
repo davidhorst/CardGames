@@ -47,25 +47,46 @@
     </div><!-- End Gam Buttons -->
   </div><!-- End Left Column -->
   <div class="col s9"><!-- Start Right Column -->
-    <div class="row col s12 card green darken-3" ng-show="game.name === 'war'" ng-controller="warGameController">
-      <div class="align center">
-        <h5 class="white-text" style="margin: 0px;">now playing:</h5>
-        <h3 class="white-text" style="margin: 0px;">War</h3>
-        <div class="align center game-table">
-          <div class="pre-game-buttons" ng-hide="currentGame">
-            <button class="btn" type="button" name="button" ng-click="handleCreateGame();"> Create Game </button>
-            <button type="button" name="button" ng-click="handleJoinGame();"> Join Game </button>
-          </div>
-          <p class="white-text"> Waiting for more players</p>
-          <button class="btn" ng-show="currentGame.state === 'waiting'" ng-click="handleStartGame();">Start Game</button>
-        </div>
-      </div>
-      <div class="align left">
-        <p class="white-text">current games: {{ games.length }}</p>
-      </div>
-      <div class="align right card">
-        <button class="btn blue-grey lighten-5 black-text" ng-click="leaveGame();">Leave Game</button>
-      </div>
+    <div class="row" ng-show="game.name === 'war'" ng-controller="warGameController">
+      <div class="col s12">
+        <div class="card green darken-3">
+          <div class="white-text card-content">
+            <div id="title" class="white-text center-align row">
+              <p style="margin: 0px;">now playing:</p>
+              <h3 style="margin: 0px;">{{ game.name }}</h3>
+            </div>
+            <div id="pre-game" class="row" ng-hide="currentGame">
+                <div class="row center-align">
+                  <button class="btn" ng-click="handleCreateGame();"> Start a new game </button>
+                </div>
+                <div class="row center-align">
+                  <table class="table col s6 offset-s3">
+                    <thead>
+                      <th>Host</th>
+                      <th>Players</th>
+                      <th>Join</th>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="game in games">
+                        <td>Bob</td>
+                        <td>{{ game.capacity[0] }}</td>
+                        <td><button class="btn" ng-click="handleJoinGame(game.gameId);"> Join Game </button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+            <div id="waiting-for-players" class="row center-align" ng-show="currentGame.state === 'waiting'">
+                <button class="btn" ng-click="handleStartGame();">Start Game</button>
+            </div>
+            <form class="right-align">
+              <div class="input-field">
+                <button class="btn blue-grey lighten-5 black-text" ng-click="leaveGame();">Leave Game</button>
+              </div>
+            </form>
+          </div> <!-- End card content -->
+        </div><!-- end card -->
+      </div> <!-- End col -->
     </div> <!-- End War Game Board -->
     <div class="row col s12 card"> <!-- Start Message input form -->
       <form ng-submit="newMessage();">

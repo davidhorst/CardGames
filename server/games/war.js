@@ -16,6 +16,7 @@ class War {
 
     getState() {
         let currentState = {};
+        currentState.name = this.name;
         currentState.gameId = this.gameId;
         currentState.capacity = [this.playerMap.length, this.totalPlayers]
         currentState.state = this.state;

@@ -77,8 +77,8 @@
             <div id="waiting-for-players" class="row center-align" ng-show="currentGame.state === 'waiting'">
                 <button class="btn" ng-click="handleStartGame();">Start Game</button>
             </div>
-            <div ng-show="roundMessage">
-              {{ roundMessage.message }}
+            <div ng-show="gameMessage">
+                <h1>{{ gameMessage }}</h1>
             </div>
             <div id="players" ng-repeat="player in currentGame.playerMap">
               <div class="card green darken-4">

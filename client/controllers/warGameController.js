@@ -55,7 +55,6 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       userName: $scope.user.user_name,
       userId: $scope.user.user_id,
       gameId: gameId};
-    console.log(joinObj);
 
     socketsFactory.joinGame(joinObj, function(returned_obj){
         $scope.$apply(function(){
@@ -76,7 +75,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       const playObj =  {
               gameId: $scope.currentGame.gameId,
               playerIdx: index};
-
+      console.log("played:", index);
       socketsFactory.playCard(playObj);
   }
 
@@ -131,18 +130,18 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       });
   });
 
-  // // War
-  // socketsFactory.socket.on('warMessage', function(boardObj) {
-  //
-  //     let message = 'Players';
-  //     boardObj.forEach(function(obj) {
-  //         message = message + " " + obj.player.name;
-  //     });
-  //     message = message + ' are in a war!';
-  //      $scope.$apply(function(){
-  //         $scope.log.push(message);
-  //     });
-  // });
+  // War
+  socketsFactory.socket.on('warMessage', function(boardObj) {
+
+      let message = 'Players';
+      boardObj.forEach(function(obj) {
+          message = message + " " + obj.player.name;
+      });
+      message = message + ' are in a war!';
+       $scope.$apply(function(){
+          $scope.log.push(message);
+      });
+  });
 
   //  Card Played
   socketsFactory.socket.on('playedCard', function(boardObj) {
@@ -160,10 +159,15 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   });
 
   // Game Over
-  socketsFactory.socket.on('gameOver', function(boardObj) {
+  socketsFactory.socket.on('playerWon', function(player){
       $scope.$apply(function(){
-          $scope.log.push('some one won?!')
+          $scope.gameMessage(`${player.name} won!`)
       });
+      setTimeout(function(){
+        $scope.$apply(function(){
+            $scope.currentGame = null;
+        });
+      }, 2000);
   });
 
 

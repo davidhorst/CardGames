@@ -113,7 +113,7 @@ class War {
         /// War Condition ///
         if(bestCardArr.length > 1) {
             // put played cards in winners pot and clear playedCards for next round
-            bestCarArr.foreach(function(obj) {
+            bestCardArr.forEach(function(obj) {
                 self.playerMap[obj.index].inWar = true;
                 self.state = 'war';
             });
@@ -123,8 +123,7 @@ class War {
             this.playedCards = [];
             // Emit war message -- Prompt User to click "war" button
             this.warPlayers = bestCardArr.length;
-            io.to(this.gameId).emit('gameState', this.getState())
-            io.to(this.gameId).emit('warMessage', bestCardObj);
+            io.to(this.gameId).emit('updateCurrentGame', this.getState())
         }
 
         /// Round Won Condition ///
@@ -279,7 +278,7 @@ class War {
           let self = this;
           setTimeout(function(){
             self.resolvePlayedCards(io);
-          }, 3000);
+            }, 1000);
         }
     }
   }

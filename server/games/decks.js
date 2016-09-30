@@ -9,14 +9,14 @@ class Deck {
 
     makeDeck() {
 
-        var suits = ["Clubs", "Diamonds", "Hearts", "Spades"];
+        var suits = ["clubs", "diamonds", "hearts", "spades"];
         this.deck = [];
 
         var i, j;
         let x = 0;
         for (i = 0; i < suits.length; i++) {
             for (j = 0; j < this.ranks.length; j++) {
-                this.deck[i*this.ranks.length + j] = {rank: this.ranks[j], suit: suits[i], imageURI: `${this.ranks[j]} + ${suits[i]}`, name: `${this.ranks[j]} of ${suits[i]} `, cardId: x };
+                this.deck[i*this.ranks.length + j] = {rank: this.ranks[j], suit: suits[i], imageURI: `${this.ranks[j]}_of_${suits[i]}`, name: `${this.ranks[j]} of ${suits[i]} `, cardId: x };
                 x +=1;
             }
         }

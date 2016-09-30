@@ -9,6 +9,7 @@
         <a class="black-text" href="/#/users/{{user.user_id}}">
           <img class="left col s4 responsive-img"src="assets/images/profile-placeholder.jpg" alt="fresh cantalope" />
           <h5> {{user.user_name}} <i class="material-icons">mode_edit</i></h5>
+          {{ user.user_id }}
         </a>
         <br>
         <div class="game-stats">
@@ -80,20 +81,22 @@
                 <button class="btn" ng-click="handleStartGame();">Start Game</button>
             </div>
             <div ng-show="roundMessage">
-              {{ roundMessage }}
+              {{ roundMessage.message }}
             </div>
             <div id="players" ng-repeat="player in currentGame.playerMap">
               <div class="card green darken-4">
                 <div class="card-content row">
                   <div class="col s3 center-align">
                     <h3>{{ player.name }}</h3>
-                    <button class="btn" ng-show="currentGame.state === 'playing'" ng-click='handlePlayCard($index)'>Play</button>
+                    <button class="btn" ng-show="currentGame.state === 'playing' && currentGame.playerMap[$index].userId === user.user_id" ng-click='handlePlayCard($index)'>Play</button>
                   </div>
                   <div class="col s9 row">
-                      <div ng-repeat='item in log | reverse'>
-                          <p ng-bind='item'></p>
-                      </div>
                       <img class="col s3 responsive-img" src="assets/images/cards/card_back.jpg" alt="mango">
+                      <div ng-repeat='card in currentGame.playerMap[$index].playedCards'>
+                      <img class="col s3 responsive-img" src="assets/images/cards/{{ card.imageURI }}.png" alt="mango">
+                      </div>
+                      <!-- <p>{{ currentGame.playerMap[$index].userId }} </p>
+                      <p> {{ user.user_id  }}</p> -->
                   </div>
                 </div>
               </div>

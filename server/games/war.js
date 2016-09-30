@@ -243,12 +243,13 @@ class War {
         player.playedCards.push(playedCard);
         this.playedCards.push({index: index, card: playedCard});
         player.played = true;
+        io.to(this.gameId).emit('updateCurrentGame', this.getState());
       };
-      console.log("played cards length: ",this.playedCards.length);
-      console.log("Active Players", this.activePlayers);
       if (this.playedCards.length === this.activePlayers){
-        console.log('round over');
-        this.resolvePlayedCards(io);
+        let self = this;
+        setTimeout(function(){
+          self.resolvePlayedCards(io);
+        }, 3000);
       }
     };
 

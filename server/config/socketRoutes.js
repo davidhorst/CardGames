@@ -74,7 +74,7 @@ class SocketRoutes {
             socket.join(data.gameId);
 
             let game = runningGames.get(data.gameId),
-                player = game.add(data.userName, socket.id),
+                player = game.add(data.userName, data.userId, socket.id),
                 message = `${player.name} has joined the game`,
                 gameState = runningGames.games[game.gameId].getState();
 

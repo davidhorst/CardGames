@@ -89,11 +89,11 @@
                   <div class="col s3 center-align">
                     <h3>{{ player.name }}</h3>
                     <button class="btn" ng-show="currentGame.state === 'playing' && currentGame.playerMap[$index].userId === user.user_id" ng-click='handlePlayCard($index)'>Play</button>
-                    <button class="btn" ng-show="currentGame.state === 'war' && currentGame.playerMap[$index].userId === user.user_id && currentGame.playerMap[$index].inWar" ng-click='handlePlayCard($index)'>Play</button>
+                    <button class="btn" ng-show="currentGame.state === 'war' && currentGame.playerMap[$index].userId === user.user_id && currentGame.playerMap[$index].inWar" ng-click='handlePlayCard($index)'>WAR!</button>
                   </div>
                   <div class="col s9 row">
                       <img class="col s3 responsive-img" src="assets/images/cards/card_back.jpg" alt="mango">
-                      <div ng-repeat='card in currentGame.playerMap[$index].playedCards'>
+                      <div ng-show="currentGame.playerMap[$index].playedCards.length > 0" ng-repeat='card in currentGame.playerMap[$index].playedCards'>
                         <img class="col s3 responsive-img" src="assets/images/cards/{{ card.imageURI }}.png" alt="mango">
                       </div>
                       <!-- <p>{{ currentGame.playerMap[$index].userId }} </p>

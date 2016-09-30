@@ -229,7 +229,7 @@ class War {
                 // Reduce number of active players
                 this.activePlayers -= 1;
                 io.to(this.gameId).emit('playerLost', player)
-                io.to(this.gameId).emit('updateCurrentGame', this.gameState())
+                io.to(this.gameId).emit('updateCurrentGame', this.getState())
             }
         });
     }

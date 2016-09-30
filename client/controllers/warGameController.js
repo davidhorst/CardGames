@@ -131,18 +131,18 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       });
   });
 
-  // War
-  socketsFactory.socket.on('warMessage', function(boardObj) {
-
-      let message = 'Players';
-      boardObj.forEach(function(obj) {
-          message = message + " " + obj.player.name;
-      });
-      message = message + ' are in a war!';
-       $scope.$apply(function(){
-          $scope.log.push(message);
-      });
-  });
+  // // War
+  // socketsFactory.socket.on('warMessage', function(boardObj) {
+  //
+  //     let message = 'Players';
+  //     boardObj.forEach(function(obj) {
+  //         message = message + " " + obj.player.name;
+  //     });
+  //     message = message + ' are in a war!';
+  //      $scope.$apply(function(){
+  //         $scope.log.push(message);
+  //     });
+  // });
 
   //  Card Played
   socketsFactory.socket.on('playedCard', function(boardObj) {

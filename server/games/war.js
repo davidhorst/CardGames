@@ -121,6 +121,9 @@ class War {
               self.pot.push(cardObj);
             })
             this.playedCards = [];
+            console.log('this.playedCards')
+            console.log(this.playedCards)
+
             // Emit war message -- Prompt User to click "war" button
             this.warPlayers = bestCardArr.length;
             io.to(this.gameId).emit('updateCurrentGame', this.getState())
@@ -140,84 +143,22 @@ class War {
             self.playerMap[cardObj.index].inWar = false;
 
           });
-          this.pot.forEach(function(card) {
+          this.pot.forEach(function(cardObj) {
               self.playerMap[bestCardArr[0].index].hand.push(cardObj.card);
           });
           // Announce winner
           let roundMessage = {winningCard: bestCardArr[0], message: "" }
-          io.to(this.gameId).emit('roundComplete', roundMessage);
           // Send out new current Game Condition
-          io.to(this.gameId).emit('updateCurrentGame', this.getState());
           // Reset for next round
           this.playedCards = [];
           bestCardArr = [];
           self.state = 'playing';
+          io.to(this.gameId).emit('roundComplete', roundMessage);
+          io.to(this.gameId).emit('updateCurrentGame', this.getState());
           this.removeLosers(io);
           this.winnerCheck(io);
         }
     }
-
-    //bestCard = [{player:player, card:card}]
-    // goToWar(bestCardObj, pot,  io) {
-    //
-    //     let cardsOnBoard = []
-    //
-    //     bestCardObj.forEach(function(boardObj) {
-    //         if(boardObj.player.hand.length > 2) {
-    //
-    //             let card = boardObj.player.hand.shift()
-    //             // emit card
-    //             pot.push(card);
-    //             card = boardObj.player.hand.shift()
-    //             // emit card
-    //             pot.push(card);
-    //             card = boardObj.player.hand.shift()
-    //
-    //             // emit card
-    //             cardsOnBoard.push({'card': card, 'player': boardObj.player});
-    //         } else {
-    //             boardObj.player.hand.forEach(function(card) {
-    //                 pot.push(card);
-    //             });
-    //         }
-    //
-    //     });
-    //     if(cardsOnBoard > 0) {
-    //         this.cardsOnBoard.forEach(function(boardObj) {
-    //             if(bestCardObj.length == 0){
-    //                 bestCardObj.push(boardObj);
-    //             } else {
-    //                 // console.log('boardObj');
-    //                 // console.log(boardObj);
-    //                 // console.log('bestCardObj[0]');
-    //                 // console.log(bestCardObj[0]);
-    //                 if(boardObj.card.rank > bestCardObj[0].card.rank) {
-    //                     bestCardObj = [];
-    //                     bestCardObj.push(boardObj);
-    //                 }
-    //                 else if(boardObj.card.rank == bestCardObj[0].card.rank) {
-    //                     bestCardObj.push(boardObj);
-    //                 }
-    //             }
-    //         });
-    //     } else {
-    //         return {player:null, pot}
-    //     }
-    //
-    //     if(bestCardObj.length > 1) {
-    //
-    //         //add emit for goto war again!
-    //
-    //         const winner = this.goToWar(bestCardObj, pot, io)
-    //         winner.pot.forEach(function(boardObj) {
-    //                 winner.player.hand.push(boardObj.card);
-    //         });
-    //         return
-    //     //return {player:player, pot -> [{player},{card}]}
-    //     } else {
-    //         return {player: bestCardObj.player, pot}
-    //     }
-    // }
 
 
     removeLosers(io) {
@@ -250,19 +191,33 @@ class War {
     playCard(index, io){
 
     if(this.state == 'war') {
+        const player = this.playerMap[index];
+        console.log('in war on server!')
+        const playedCard = false;
         this.playedCards.forEach(function(card) {
-            if(index != card.index) {
-                const playedCard =  player.hand.shift();
-                player.playedCards.push(playedCard);
-                this.playedCards.push({index: index, card: playedCard});
-                player.played = true;
-            }
-
-            if (this.playedCards.length === this.warPlayers){
-              console.log('round over');
-              this.resolvePlayedCards(io);
+            if(index == card.index) {
+                playedCard = true;
             }
         });
+        console.log('war has played card? s', playedCard )
+
+        if(! playedCard) {
+            console.log('go play a card')
+            const playedCard =  player.hand.shift();
+            player.playedCards.push(playedCard);
+            this.playedCards.push({index: index, card: playedCard});
+            player.played = true;
+            io.to(this.gameId).emit('updateCurrentGame', this.getState());
+        }
+        console.log("played cards so far: ", this.playedCards.length);
+        console.log("war players: ", this.warPlayers);
+        if (this.playedCards.length === this.warPlayers){
+          let self = this;
+          setTimeout(function(){
+            self.resolvePlayedCards(io);
+            }, 1000);
+        }
+
 
     } else {
         const player = this.playerMap[index];

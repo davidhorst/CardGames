@@ -8,6 +8,7 @@ class War {
         this.minPlayers = 2;
         this.maxPlayers = 4;
         this.activePlayers = 0;
+        this.warPlayers = 0;
         this.playerMap = [];
         this.state = 'waiting';
         this.Deck = new Deck();
@@ -112,11 +113,17 @@ class War {
         /// War Condition ///
         if(bestCardArr.length > 1) {
             // put played cards in winners pot and clear playedCards for next round
+            bestCarArr.foreach(function(obj) {
+                self.playerMap[obj.index].inWar = true;
+                self.state = 'war';
+            });
             this.playedCards.forEach(function(cardObj){
               self.pot.push(cardObj);
             })
             this.playedCards = [];
             // Emit war message -- Prompt User to click "war" button
+            this.warPlayers = bestCardArr.length;
+            io.to(this.gameId).emit('gameState', this.getState())
             io.to(this.gameId).emit('warMessage', bestCardObj);
         }
 
@@ -131,6 +138,11 @@ class War {
             self.playerMap[cardObj.index].playedCards = [];
             // reset player for next round
             self.playerMap[cardObj.index].played = false;
+            self.playerMap[cardObj.index].inWar = false;
+
+          });
+          this.pot.forEach(function(card) {
+              self.playerMap[bestCardArr[0].index].hand.push(cardObj.card);
           });
           // Announce winner
           let roundMessage = {winningCard: bestCardArr[0], message: "" }
@@ -140,72 +152,73 @@ class War {
           // Reset for next round
           this.playedCards = [];
           bestCardArr = [];
+          self.state = 'playing';
           this.removeLosers(io);
           this.winnerCheck(io);
         }
     }
 
     //bestCard = [{player:player, card:card}]
-    goToWar(bestCardObj, pot,  io) {
-
-        let cardsOnBoard = []
-
-        bestCardObj.forEach(function(boardObj) {
-            if(boardObj.player.hand.length > 2) {
-
-                let card = boardObj.player.hand.shift()
-                // emit card
-                pot.push(card);
-                card = boardObj.player.hand.shift()
-                // emit card
-                pot.push(card);
-                card = boardObj.player.hand.shift()
-
-                // emit card
-                cardsOnBoard.push({'card': card, 'player': boardObj.player});
-            } else {
-                boardObj.player.hand.forEach(function(card) {
-                    pot.push(card);
-                });
-            }
-
-        });
-        if(cardsOnBoard > 0) {
-            this.cardsOnBoard.forEach(function(boardObj) {
-                if(bestCardObj.length == 0){
-                    bestCardObj.push(boardObj);
-                } else {
-                    // console.log('boardObj');
-                    // console.log(boardObj);
-                    // console.log('bestCardObj[0]');
-                    // console.log(bestCardObj[0]);
-                    if(boardObj.card.rank > bestCardObj[0].card.rank) {
-                        bestCardObj = [];
-                        bestCardObj.push(boardObj);
-                    }
-                    else if(boardObj.card.rank == bestCardObj[0].card.rank) {
-                        bestCardObj.push(boardObj);
-                    }
-                }
-            });
-        } else {
-            return {player:null, pot}
-        }
-
-        if(bestCardObj.length > 1) {
-
-            //add emit for goto war again!
-
-            const winner = this.goToWar(bestCardObj, pot, io)
-            winner.pot.forEach(function(boardObj) {
-                    winner.player.hand.push(boardObj.card);
-            });
-            return
-        //return {player:player, pot -> [{player},{card}]}
-        } else {
-            return {player: bestCardObj.player, pot}
-        }
-    }
+    // goToWar(bestCardObj, pot,  io) {
+    //
+    //     let cardsOnBoard = []
+    //
+    //     bestCardObj.forEach(function(boardObj) {
+    //         if(boardObj.player.hand.length > 2) {
+    //
+    //             let card = boardObj.player.hand.shift()
+    //             // emit card
+    //             pot.push(card);
+    //             card = boardObj.player.hand.shift()
+    //             // emit card
+    //             pot.push(card);
+    //             card = boardObj.player.hand.shift()
+    //
+    //             // emit card
+    //             cardsOnBoard.push({'card': card, 'player': boardObj.player});
+    //         } else {
+    //             boardObj.player.hand.forEach(function(card) {
+    //                 pot.push(card);
+    //             });
+    //         }
+    //
+    //     });
+    //     if(cardsOnBoard > 0) {
+    //         this.cardsOnBoard.forEach(function(boardObj) {
+    //             if(bestCardObj.length == 0){
+    //                 bestCardObj.push(boardObj);
+    //             } else {
+    //                 // console.log('boardObj');
+    //                 // console.log(boardObj);
+    //                 // console.log('bestCardObj[0]');
+    //                 // console.log(bestCardObj[0]);
+    //                 if(boardObj.card.rank > bestCardObj[0].card.rank) {
+    //                     bestCardObj = [];
+    //                     bestCardObj.push(boardObj);
+    //                 }
+    //                 else if(boardObj.card.rank == bestCardObj[0].card.rank) {
+    //                     bestCardObj.push(boardObj);
+    //                 }
+    //             }
+    //         });
+    //     } else {
+    //         return {player:null, pot}
+    //     }
+    //
+    //     if(bestCardObj.length > 1) {
+    //
+    //         //add emit for goto war again!
+    //
+    //         const winner = this.goToWar(bestCardObj, pot, io)
+    //         winner.pot.forEach(function(boardObj) {
+    //                 winner.player.hand.push(boardObj.card);
+    //         });
+    //         return
+    //     //return {player:player, pot -> [{player},{card}]}
+    //     } else {
+    //         return {player: bestCardObj.player, pot}
+    //     }
+    // }
 
 
     removeLosers(io) {
@@ -236,21 +249,42 @@ class War {
     }
 
     playCard(index, io){
-      const player = this.playerMap[index];
-      // player.played set to true after a card is played
-      if (!player.played){
-        const playedCard =  player.hand.shift();
-        player.playedCards.push(playedCard);
-        this.playedCards.push({index: index, card: playedCard});
-        player.played = true;
-      };
-      console.log("played cards length: ",this.playedCards.length);
-      console.log("Active Players", this.activePlayers);
-      if (this.playedCards.length === this.activePlayers){
-        console.log('round over');
-        this.resolvePlayedCards(io);
+
+    if(this.pot != []) {
+        this.playedCards.forEach(function(card) {
+            if(index != card.index) {
+                const playedCard =  player.hand.shift();
+                player.playedCards.push(playedCard);
+                this.playedCards.push({index: index, card: playedCard});
+                player.played = true;
+            }
+
+            if (this.playedCards.length === this.warPlayers){
+              console.log('round over');
+              this.resolvePlayedCards(io);
+            }
+        });
+
+    } else {
+
+        const player = this.playerMap[index];
+        // player.played set to true after a card is played
+        if (!player.played){
+          const playedCard =  player.hand.shift();
+          player.playedCards.push(playedCard);
+          this.playedCards.push({index: index, card: playedCard});
+          player.played = true;
+        };
+        console.log("played cards length: ",this.playedCards.length);
+        console.log("Active Players", this.activePlayers);
+
+        if (this.playedCards.length === this.activePlayers){
+          console.log('round over');
+          this.resolvePlayedCards(io);
+        }
       }
-    };
+    }
+
 
     // Depreciated --  this.state === playing now routes to playCard function
     // recieveAction(playerId, data, io) {

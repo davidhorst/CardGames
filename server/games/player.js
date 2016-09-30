@@ -9,6 +9,7 @@ class Player {
         this.active = false;
         this.played = false;
         this.socketId = socketId;
+        this.inWar = false;
     }
 
     getCard(deck) {

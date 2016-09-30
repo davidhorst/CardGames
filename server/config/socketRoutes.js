@@ -116,7 +116,7 @@ class SocketRoutes {
 
         // Play card
         socket.on('playCard', function (playObj){
-            console.log('play card at socket routes');
+            // console.log('play card at socket routes');
             runningGames.games[playObj.gameId].playCard(playObj.playerIdx, io);
         });
 

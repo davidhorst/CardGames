@@ -75,7 +75,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       const playObj =  {
               gameId: $scope.currentGame.gameId,
               playerIdx: index};
-      console.log("played:", index);
+      // console.log("played:", index);
       socketsFactory.playCard(playObj);
   }
 
@@ -99,7 +99,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       $scope.$apply(function(){
           $scope.roundMessage = roundMessage;
       });
-      console.log('round Message: ', roundMessage);
+      // console.log('round Message: ', roundMessage);
     })
 
   // Your Game was joined
@@ -114,7 +114,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       $scope.$apply(function(){
           $scope.currentGame = currentGame;
       });
-      console.log(currentGame);
+      // console.log(currentGame);
   });
 
   // Game started
@@ -146,7 +146,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
   //  Card Played
   socketsFactory.socket.on('playedCard', function(boardObj) {
       $scope.$apply(function(){
-          console.log(boardObj);
+          // console.log(boardObj);
           // $scope.log.push(`${boardObj.player.name} played ${boardObj.card.name}`)
     });
   });

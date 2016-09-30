@@ -97,8 +97,8 @@ class War {
             if(bestCardArr.length == 0){
                 bestCardArr.push(cardObj);
             } else {
-                console.log("card Obj", cardObj);
-                console.log("best card arr", bestCardArr);
+                // console.log("card Obj", cardObj);
+                // console.log("best card arr", bestCardArr);
                 if(cardObj.card.rank > bestCardArr[0].card.rank) {
                     bestCardArr = [];
                     bestCardArr.push(cardObj);
@@ -131,9 +131,9 @@ class War {
         /// Round Won Condition ///
         if(bestCardArr.length == 1) {
           this.playedCards.forEach(function(cardObj) {
-            console.log("best card: " ,bestCardArr[0]);
+            // console.log("best card: " ,bestCardArr[0]);
             // give all cards in this.playedCards to winner
-            console.log("this.playermap", self.playerMap[0]);
+            // console.log("this.playermap", self.playerMap[0]);
             self.playerMap[bestCardArr[0].index].hand.push(cardObj.card);
             // clear out playedCards from players hand (player.playedCards is for UI)
             self.playerMap[cardObj.index].playedCards = [];

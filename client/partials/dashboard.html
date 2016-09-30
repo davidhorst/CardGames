@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                       <tr ng-repeat="game in games | filter: fullGames('capacity')">
-                        <td>{{ game.playerMap[0].name }}</td>
+                        <td>{{ game.host }}</td>
                         <td>{{ game.capacity[0] }}</td>
                         <td><button class="btn" ng-click="handleJoinGame(game.gameId);"> Join Game </button></td>
                       </tr>
@@ -79,12 +79,15 @@
             <div id="waiting-for-players" class="row center-align" ng-show="currentGame.state === 'waiting'">
                 <button class="btn" ng-click="handleStartGame();">Start Game</button>
             </div>
+            <div ng-show="roundMessage">
+              {{ roundMessage }}
+            </div>
             <div id="players" ng-repeat="player in currentGame.playerMap">
               <div class="card green darken-4">
                 <div class="card-content row">
                   <div class="col s3 center-align">
                     <h3>{{ player.name }}</h3>
-                    <button class="btn" ng-show="currentGame.state === 'playing'" ng-click='handlePlayCard()'>Play</button>
+                    <button class="btn" ng-show="currentGame.state === 'playing'" ng-click='handlePlayCard($index)'>Play</button>
                   </div>
                   <div class="col s9 row">
                       <div ng-repeat='item in log | reverse'>
@@ -121,13 +124,13 @@
       </div>
     </div><!-- Message list -->
 
-    <div class="row col s12 card">
+    <!-- <div class="row col s12 card">
       <div class="input-field col s12">
         <i class="material-icons prefix">bug_report</i>
         <input id="bug" type="text" name="bug">
         <label for="bug">Submit Bug Report</label>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </div>

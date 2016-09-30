@@ -13,79 +13,121 @@ class SocketRoutes {
 
         var self = this;
 
-        socket.on("showGames" ,function(data, cb){
-          const gamesArr = runningGames.show(data);
-          cb({ data : gamesArr });
-          // socket.emit('showGames', { data: gamesArr })
-        });
+        // Reusable Methods
+            // Games Index
+            socket.on("gamesIndex" ,function(cb){
+              const gamesArr = runningGames.index();
+              cb({ data : gamesArr });
+            });
 
-        socket.on('gameCreate', function(data, cb){
-            let war,
-                gameId,
-                gameState;
+            // Get Current Messages
+            socket.on("getMessages", function(cb){
+              cb({ data : messages });
+            });
 
+            // Add a Message
+            socket.on('addMessage', function(msgObj, cb){
+              messages.push(msgObj);
+              io.emit('updateMessages', { data: messages} )
+              cb();
+            });
+
+        // Create Game
+        socket.on('createGame', function(data, cb){
+            // Switch Case for future games addition
             switch(data.gameName) {
                 case 'war':
-                    war = new War(guid())
-                    gameId = runningGames.add(war);
-                    gameState = runningGames.games[gameId].getState();
-                    // Add User to game
-                    war.add(data.userName, data.userId, socket.id);
-                    // return data to the socketsFactory
-                    cb(war.getState());
-                    let messageObj = {
-                          gameId: war.gameId,
-                          username: "Host",
-                          message: `${data.userName} started a game of War`,
-                          createdAt: new Date()};
-                    messages.push(messageObj);
-                    io.emit('updateMessages', { data: messages });
-                    self.users.setCurrentGame(data.userId, war.gameId); //update user's current game in the db
+                    let game = new War(guid());
                     break;
-
             }
-            // join socket to game room
-            socket.join(gameId);
-            // returns game state
-            // socket.emit('gameCreated', gameState );
-            // emit message to entire room
-            io.emit("updateGames");
-            io.to(gameId).emit("gameResponse", gameState);
 
+            // Add User to game
+            game.add(data.userName, data.userId, socket.id);
+
+            // add game to running games
+            let gameId = runningGames.add(game),
+                gameState = runningGames.games[gameId].getState();
+
+            // join user's socket to game room
+            socket.join(gameId);
+            io.to(gameId).emit("joinedGame", gameState);
+            cb(game.getState());
+
+            // set game ID in user database for error handling
+            self.users.setCurrentGame(data.userId, game.gameId);
+
+            // Tell all users to update games scope
+            io.emit("updateGames");
+
+            // Create game created message and emit to update messages
+            let messageObj = {
+              gameId: game.gameId,
+              username: "Host",
+              message: `${data.userName} started a game of War`,
+              createdAt: new Date()};
+            messages.push(messageObj);
+            io.emit('updateMessages', { data: messages });
         });
 
+        // Join Exisitng Game -- DONE
         socket.on('joinGame', function(data, cb) {
             socket.join(data.gameId);
 
             let game = runningGames.get(data.gameId),
                 player = game.add(data.userName, socket.id),
-                obj = {player: player, gameState: game.getState()},
-                message = `${player.name} has joined the game`;
+                message = `${player.name} has joined the game`,
+                gameState = runningGames.games[game.gameId].getState();
 
+            // join user's socket to game room
+            socket.join(game.gameId);
+            io.to(game.gameId).emit("joinedGame", gameState);
+            cb(game.getState());
+
+            // set game ID in user database for error handling
+            self.users.setCurrentGame(data.userId, game.gameId);
+
+            // Tell all users to update games scope
+            io.emit("updateGames");
+
+            // Create game created message and emit to update messages
+            let messageObj = {
+              gameId: game.gameId,
+              username: "Host",
+              message: message,
+              createdAt: new Date()};
+            messages.push(messageObj);
+            io.emit('updateMessages', { data: messages });
+
+            // ??
             io.emit('joinedGame', message);
             io.to(data.gameId).emit("gameResponse", game.getState() );
-            self.users.setCurrentGame(data.userId, data.gameId); //update user's current game in the db
-            cb(obj);
+
+            // Update user's currentGame in the database
+            self.users.setCurrentGame(data.userId, data.gameId);
         });
 
+        // Start Game
+        socket.on('startGame', function(gameObj){
+            let game = runningGames.get(gameObj.gameId);
+            game.deal();
+            game.state = 'playing';
+            io.to(gameObj.gameId).emit("updateCurrentGame", game.getState() );
+        });
+
+        // Play card
+        socket.on('playCard', function (playObj){
+            console.log('play card at socket routes');
+            runningGames.games[playObj.gameId].playCard(playObj.playerIdx, io);
+        });
+
+        //player is sending data to current game. the game needs to be informed and parse the data
         socket.on('gameMessage', function(data) {
-          //player is sending data to current game. the game needs to be informed and parse the data
 
           const newState = runningGames.games[data.gameId].recieveAction(socket.id, data, io);
           io.to(data.gameId).emit("gameResponse", newState);
           io.to(data.gameId).emit('enterRoom');
         });
 
-        // return existing messages to requesting client
-        socket.on("getMessages", function(cb){
-          cb({ data : messages });
-        });
-
-        socket.on('addMessage', function(msgObj, cb){
-          messages.push(msgObj);
-          io.emit('updateMessages', { data: messages} )
-          cb();
-        });
 
 
         function guid(){

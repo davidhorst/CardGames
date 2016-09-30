@@ -9,7 +9,7 @@ class Deck {
 
     makeDeck() {
 
-        var suits = ["Clubs", "Diamonds", "Hears", "Spades"];
+        var suits = ["Clubs", "Diamonds", "Hearts", "Spades"];
         this.deck = [];
 
         var i, j;

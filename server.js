@@ -22,10 +22,9 @@ app.use(expressjwt({
 
 require('./server/config/mongoose.js');
 
-var users = require('./server/controllers/users.js');
 const socketRoutes = require('./server/config/socketRoutes');
 
-require('./server/config/routes.js')(app, users);
+require('./server/config/routes.js')(app, socketRoutes.users);
 
 
 const server = app.listen( port, function() {

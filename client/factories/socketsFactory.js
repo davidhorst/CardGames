@@ -6,58 +6,58 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
         var self = this;
         self.socket = socket;
 
+        // Reusable Methods
+          // Get Current Games
+          this.gamesIndex = function(cb){
+            socket.emit("gamesIndex", function(data){
+              cb(data);
+            });
+          };
 
+          // Get Current Messages
+          this.getMessages = function(cb){
+            socket.emit("getMessages", function(data){
+              cb(data);
+            });
+          };
+
+          // Get gameState of Your currrentGame
+          this.getGameState = function(gameId) {
+            socket.emit("getGameState", gameId);
+          };
+
+          // Add a message
+          this.addMessage = function(msgObj, cb){
+            socket.emit('addMessage', msgObj ,function(){
+              cb();
+            });
+          };
+
+        // Create Game
         this.createGame = function(gameObj, cb){
-          socket.emit("gameCreate", gameObj, function(returned_data){
+          socket.emit("createGame", gameObj, function(returned_data){
             // returned_data = war.gameState()
             cb(returned_data);
           });
         };
 
-        //player plays card if possible
-        this.playCard = function(gameObj) {
-            socket.emit("gameMessage", gameObj)
-        }
-
-        // Start Game method
-        this.startGame = function(gameObj) {
-            socket.emit("gameMessage", gameObj);
-        }
-
-        // Join Game methodd
+        // Join Game
         this.joinGame = function(joinObj, cb){
-            socket.emit("joinGame", joinObj, function(obj){
+          socket.emit("joinGame", joinObj, function(obj){
             cb(obj);
           });
         };
-        // Show Games method (index)
-        this.showGames = function(game_name, cb){
-          socket.emit("showGames", game_name, function(data){
-            cb(data);
-          });
-        };
 
+        // Start Game
+        this.startGame = function(gameObj) {
+          socket.emit("startGame", gameObj);
+        }
 
-        // Return Current messages
-        this.getMessages = function(cb){
-          socket.emit("getMessages", function(data){
-            cb(data);
-          });
-        };
-
-        //causes all connected users to get game state
-        this.getGameState = function(game_name) {
-            socket.emit("gameMessage", game_name);
-        };
-
-
-        ////  Socket Responses  ////
-
-        this.addMessage = function(msgObj, cb){
-          socket.emit('addMessage', msgObj ,function(){
-            cb();
-          });
-        };
+        // Play Card
+        this.playCard = function(playObj) {
+            console.log('play card at socket factory');
+            socket.emit("playCard", playObj)
+        }
 
    };
 

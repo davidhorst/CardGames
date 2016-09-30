@@ -119,10 +119,9 @@ class War {
             });
             this.playedCards.forEach(function(cardObj){
               self.pot.push(cardObj);
+              self.playerMap[cardObj.index].played = false;
             })
             this.playedCards = [];
-            console.log('this.playedCards')
-            console.log(this.playedCards)
 
             // Emit war message -- Prompt User to click "war" button
             this.warPlayers = bestCardArr.length;
@@ -192,25 +191,20 @@ class War {
 
     if(this.state == 'war') {
         const player = this.playerMap[index];
-        console.log('in war on server!')
         const playedCard = false;
         this.playedCards.forEach(function(card) {
             if(index == card.index) {
                 playedCard = true;
             }
         });
-        console.log('war has played card? s', playedCard )
 
         if(! playedCard) {
-            console.log('go play a card')
             const playedCard =  player.hand.shift();
             player.playedCards.push(playedCard);
             this.playedCards.push({index: index, card: playedCard});
             player.played = true;
             io.to(this.gameId).emit('updateCurrentGame', this.getState());
         }
-        console.log("played cards so far: ", this.playedCards.length);
-        console.log("war players: ", this.warPlayers);
         if (this.playedCards.length === this.warPlayers){
           let self = this;
           setTimeout(function(){

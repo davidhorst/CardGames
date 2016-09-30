@@ -250,7 +250,7 @@ class War {
 
     playCard(index, io){
 
-    if(this.pot != []) {
+    if(this.state == 'war') {
         this.playedCards.forEach(function(card) {
             if(index != card.index) {
                 const playedCard =  player.hand.shift();

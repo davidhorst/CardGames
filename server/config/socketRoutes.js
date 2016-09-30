@@ -34,10 +34,11 @@ class SocketRoutes {
 
         // Create Game
         socket.on('createGame', function(data, cb){
+            let game;
             // Switch Case for future games addition
             switch(data.gameName) {
                 case 'war':
-                    let game = new War(guid());
+                    game = new War(guid());
                     break;
             }
 

@@ -55,8 +55,7 @@ app.factory('socketsFactory', ['$http', '$cookies', '$location', '$routeParams',
 
         // Play Card
         this.playCard = function(playObj) {
-            console.log('play card at socket factory');
-            socket.emit("playCard", playObj)
+           socket.emit("playCard", playObj);
         }
 
    };

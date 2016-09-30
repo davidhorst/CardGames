@@ -55,6 +55,7 @@ app.controller('warGameController', ['$scope', '$location', 'usersFactory', 'war
       userName: $scope.user.user_name,
       userId: $scope.user.user_id,
       gameId: gameId};
+    console.log(joinObj);
 
     socketsFactory.joinGame(joinObj, function(returned_obj){
         $scope.$apply(function(){

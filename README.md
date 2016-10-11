@@ -2,8 +2,8 @@
 A socket based card gaming platform.
 
 #Compilation
-  Mongo database
-  npm install 
-  bower install
+1. Mongo database
+2. npm install 
+3. bower install
   
 
